@@ -87,6 +87,7 @@ class Router
 
       return $result;
    }
+   /* Individual regexes matches approach */
    public function dispatch()
    {
       $uri = '/' . trim($_SERVER['REQUEST_URI'], '/');
@@ -121,6 +122,7 @@ class Router
          echo "404";
       }
    }
+   /* combining all regular expression method */
    public function run()
    {
       $uri = '/' . trim($_SERVER['REQUEST_URI'], '/');
@@ -133,4 +135,5 @@ class Router
       $urlParams = $this->combineArr($paramsName, $params); // for $request->params->name
       $fn(...$params);
    }
+   /* best is chunk split algorithm */
 }
