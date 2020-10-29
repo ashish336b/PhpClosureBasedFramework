@@ -28,6 +28,8 @@ if ($env) {
             echo "$id\n $hello \n$bollo";
          }, ['MelloMiddleware']);
          $app->get("/index1/{userId?}", function () {
+            $arr = ["ok" => 1, "name" => "ashish"];
+            echo json_encode($arr);
          });
       });
       $app->get("/bhalu", function () {

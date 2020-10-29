@@ -75,6 +75,9 @@ class Router
       if (!count($values) && !$keys) {
          return false;
       }
+      if (count($keys) != count($values)) {
+         return false;
+      }
       $result = array();
 
       foreach ($keys as $i => $k) {
@@ -128,12 +131,15 @@ class Router
       $uri = '/' . trim($_SERVER['REQUEST_URI'], '/');
       $regex = implode("|", $this->patternCollection['GET']);
       $regex = "/^" . "(?:" . $regex . ")$/";
-      preg_match($regex, $uri, $matches);
-      for ($i = 1; '' === $matches[$i]; ++$i);
-      $params = [...array_filter(array_slice($matches, 1))];
-      list($fn, $paramsName, $middleware) = $this->closureCollection['GET'][$i - 1];
-      $urlParams = $this->combineArr($paramsName, $params); // for $request->params->name
-      $fn(...$params);
+      if (preg_match($regex, $uri, $matches)) {
+         for ($i = 1; '' === $matches[$i]; ++$i);
+         $params = [...array_filter(array_slice($matches, 1))];
+         list($fn, $paramsName, $middleware) = $this->closureCollection['GET'][$i - 1];
+         $urlParams = $this->combineArr($paramsName, $params); // for $request->params->name
+         $fn(...$params);
+      } else {
+         echo "not Found";
+      };
    }
    /* best is chunk split algorithm */
 }
