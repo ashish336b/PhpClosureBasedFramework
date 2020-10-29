@@ -44,7 +44,7 @@ if ($env) {
    });
 
 
-   $app->run();
+   $app->dispatch();
 }
 
 /* function rutime($ru, $rus, $index)
