@@ -1,0 +1,16 @@
+{
+    "name": "ashish336b/php-closure-based-framework",
+    "description": "This is small php framework for api based development",
+    "authors": [
+        {
+            "name": "ashish336b",
+            "email": "ashish336b@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "ashish336b\\PhpCBF\\": "src/"
+        }
+    }
+}
