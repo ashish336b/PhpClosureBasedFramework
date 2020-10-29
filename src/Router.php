@@ -41,6 +41,7 @@ class Router
       $this->routeCollection['GET'][] = ['fn' => $action, 'pattern' => $urlRegex, 'params' =>
       $params, 'middleware' => $getAllMiddleWare];
       $this->patternCollection['GET'][] = $urlRegex;
+      $this->closureCollection['GET'][] = [$action, $params, $middleware];
    }
    private function getParamsName($uriPattern)
    {
@@ -53,10 +54,11 @@ class Router
    }
    private function parseUrl($pattern)
    {
+      $pattern = str_replace("/", "\/", $pattern);
       // below line check if /{id} is in the string and replace with regex
       $regix = $this->replaceWithRegix('/\/\{[\w]*\}/', "/([\w]*)", $pattern);
       // below line check if /{id?} is in the string and replace with apporiate regex
-      $regix = $this->replaceWithRegix("/\/\{[\w]*\?\}/", '(\/[\w]*)?', $regix);
+      $regix = $this->replaceWithRegix("/([\\\]\/\{[a-z]+\?\})/", '(\/[\w]*)?', $regix);
       // below line check if /{id:num} is in the string and replace with apporiate regex
       $regix = $this->replaceWithRegix('/\/\{[\w]*:num\}/', '(\/[\d]*)?', $regix);
       return $regix;
@@ -118,5 +120,17 @@ class Router
       if ($notFoundCount === count($this->routeCollection['GET'])) {
          echo "404";
       }
+   }
+   public function run()
+   {
+      $uri = '/' . trim($_SERVER['REQUEST_URI'], '/');
+      $regex = implode("|", $this->patternCollection['GET']);
+      $regex = "/^" . "(?:" . $regex . ")$/";
+      preg_match($regex, $uri, $matches);
+      for ($i = 1; '' === $matches[$i]; ++$i);
+      $params = [...array_filter(array_slice($matches, 1))];
+      list($fn, $paramsName, $middleware) = $this->closureCollection['GET'][$i - 1];
+      $urlParams = $this->combineArr($paramsName, $params); // for $request->params->name
+      $fn(...$params);
    }
 }
