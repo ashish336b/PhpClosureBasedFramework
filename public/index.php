@@ -7,6 +7,9 @@ Application::get("/", function () {
    require_once __DIR__ . "/../app/views/welcome.php";
 });
 Application::group(['prefix' => '/admin'], function () {
+   Application::get("/login", function () {
+      echo "login page";
+   });
    Application::group(['prefix' => '/setting'], function () {
       Application::get('/{token}/fetch/{id?}', function ($id) {
          require_once __DIR__ . "/../app/views/admin.php";
