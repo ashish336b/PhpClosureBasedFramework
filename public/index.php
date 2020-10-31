@@ -6,6 +6,13 @@ require_once __DIR__ . "/../vendor/autoload.php";
 Application::get("/", function () {
    require_once __DIR__ . "/../app/views/welcome.php";
 });
+Application::group(['prefix' => '/admin'], function () {
+   Application::group(['prefix' => '/setting'], function () {
+      Application::get('/{token}/fetch/{id?}', function ($id) {
+         echo "$id";
+      });
+   });
+});
 Application::run();
 
    //test urls
