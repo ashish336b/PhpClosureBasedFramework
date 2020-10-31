@@ -6,6 +6,7 @@ class Router
 {
     private $_utility;
     private $_route;
+    private $_dispatch;
     protected $currentPrefix = '';
     protected $currentMiddleware = [];
 
@@ -13,6 +14,7 @@ class Router
     {
         $this->_utility = new Utility();
         $this->_route = new Route();
+        $this->_dispatch = new Dispatch($this->_route);
     }
     public function group($url, $callback)
     {
@@ -30,9 +32,17 @@ class Router
 
     public function get($url, $action, $middleware = [])
     {
+        $this->mapRoutes('GET', $url, $action, $middleware);
+    }
+    public function post($url, $action, $middleware)
+    {
+        $this->mapRoutes('POST', $url, $action, $middleware);
+    }
+    private function mapRoutes($method, $url, $action, $middleware = [])
+    {
         $uriPattern = $this->currentPrefix . $url;
         $getAllMiddleWare = $this->_utility->pushArr($this->currentMiddleware, $middleware);
-        $this->_route->addRoutes('GET', $uriPattern, $action, $getAllMiddleWare);
+        $this->_route->addRoutes($method, $uriPattern, $action, $getAllMiddleWare);
     }
     public function dispatch()
     {
@@ -61,25 +71,6 @@ class Router
     }
     public function run()
     {
-        $uri = '/' . trim($_SERVER['REQUEST_URI'], '/');
-        if (isset($this->_route->staticPatternCollection['GET'][$uri])) {
-            $this->_route->staticPatternCollection['GET'][$uri][0]();
-            return;
-        }
-        if (isset($this->_route->variablePatternCollection['GET'])) {
-            $regex = implode("|", $this->_route->variablePatternCollection['GET']);
-            $regex = "/^" . "(?:" . $regex . ")$/";
-            if (preg_match($regex, $uri, $matches)) {
-                for ($i = 1; '' === $matches[$i]; ++$i);
-                $params = [...array_filter(array_slice($matches, 1))];
-                list($fn, $paramsName, $middleware) = $this->_route->closureCollection['GET'][$i - 1];
-                $urlParams = $this->_utility->combineArr($paramsName, $params); // for $request->params->name
-                $fn(...$params);
-            } else {
-                echo "not Found";
-            };
-        } else {
-            echo "not Found";
-        }
+        $this->_dispatch->dispatch();
     }
 }

@@ -9,7 +9,7 @@ Application::get("/", function () {
 Application::group(['prefix' => '/admin'], function () {
    Application::group(['prefix' => '/setting'], function () {
       Application::get('/{token}/fetch/{id?}', function ($id) {
-         echo "$id";
+         require_once __DIR__ . "/../app/views/admin.php";
       });
    });
 });

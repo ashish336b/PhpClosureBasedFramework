@@ -9,10 +9,9 @@ class Route implements IRoute
 {
     private $_utility;
     public $routeCollection = [];
-    /* for routes pattern another dispatch logic */
-    public $staticPatternCollection = [];
-    public $variablePatternCollection = ['GET' => []];
-    public $closureCollection = [];
+    public $staticPatternCollection = ['GET' => [], 'POST' => [], 'PUT' => [], 'DELETE' => []];
+    public $variablePatternCollection = ['GET' => [], 'POST' => [], 'PUT' => [], 'DELETE' => []];
+    public $closureCollection = ['GET' => [], 'POST' => [], 'PUT' => [], 'DELETE' => []];
     public function __construct()
     {
         $this->_utility = new Utility();
@@ -23,7 +22,6 @@ class Route implements IRoute
         $params = $this->_utility->getPlaceholderName($uriPattern);
         $this->routeCollection[$method][] = ['fn' => $action, 'pattern' => $urlRegex, 'params' =>
         $params, 'middleware' => $middleware];
-        /* for combined regular expression */
         if ($this->isStaticPattern($uriPattern)) {
             if (isset($this->staticPatternCollection[$method][$uriPattern])) {
                 throw new Exception("Cannot add same routes twice : $uriPattern \n");
