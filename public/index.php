@@ -4,7 +4,7 @@ use ashish336b\PhpCBF\Application;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 Application::get("/", function () {
-   require_once __DIR__ . "/../views/welcome.php";
+   require_once __DIR__ . "/../app/views/welcome.php";
 });
 Application::run();
 

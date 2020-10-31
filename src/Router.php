@@ -6,6 +6,7 @@ use Exception;
 
 class Router
 {
+    private $utility;
     protected $currentPrefix = '';
     protected $currentMiddleware = [];
     protected $routeCollection = [];
@@ -14,6 +15,10 @@ class Router
     protected $variablePatternCollection = [];
     protected $closureCollection = [];
 
+    public function __construct()
+    {
+        $this->utility = new Utility();
+    }
     public function group($url, $callback)
     {
         if (!isset($url['middleware'])) {
@@ -22,25 +27,19 @@ class Router
         $previousPrefix = $this->currentPrefix;
         $this->currentPrefix = $previousPrefix . $url['prefix'];
         $previousMiddleware = $this->currentMiddleware;
-        $this->currentMiddleware = $this->pushArr($previousMiddleware, $url['middleware']);
+        $this->currentMiddleware = $this->utility->pushArr($previousMiddleware, $url['middleware']);
         $callback();
         $this->currentPrefix = $previousPrefix;
         $this->currentMiddleware = $previousMiddleware;
     }
 
-    private function pushArr($arr1, $arr2)
-    {
-        array_push($arr1, ...$arr2);
-        return $arr1;
-    }
-
     public function get($url, $action, $middleware = [])
     {
         $uriPattern = $this->currentPrefix . $url;
-        $getAllMiddleWare = $this->pushArr($this->currentMiddleware, $middleware);
+        $getAllMiddleWare = $this->utility->pushArr($this->currentMiddleware, $middleware);
 
-        $urlRegex = $this->parseUrl($uriPattern);
-        $params = $this->getParamsName($uriPattern);
+        $urlRegex = $this->utility->parseURI($uriPattern);
+        $params = $this->utility->getPlaceholderName($uriPattern);
         $this->routeCollection['GET'][] = ['fn' => $action, 'pattern' => $urlRegex, 'params' =>
         $params, 'middleware' => $getAllMiddleWare];
         /* for combined regular expression */
@@ -59,60 +58,13 @@ class Router
             $this->variablePatternCollection['GET'][] = $urlRegex;
         }
     }
-    private function getParamsName($uriPattern)
-    {
-        if (preg_match_all('/\{[a-z]+[?]?\}/', $uriPattern, $matches)) {
-            $matches[0] = array_map(function ($value) {
-                return preg_replace('/[{\?}]/', "", $value);
-            }, $matches[0]);
-            return $matches[0];
-        }
-    }
     private function isStaticPattern($uriPattern)
     {
-        $pattern = str_replace("/", "\/", $uriPattern);
+        str_replace("/", "\/", $uriPattern);
         if (preg_match('/\{[a-zA-Z0-9-?]+\}/', $uriPattern, $matches)) {
             return false;
         }
         return true;
-    }
-    private function parseUrl($pattern)
-    {
-        $pattern = str_replace("/", "\/", $pattern);
-        // below line check if /{id} is in the string and replace with regex
-        $regix = $this->replaceWithRegix('/\/\{[\w]*\}/', "/([\w]*)", $pattern);
-        // below line check if /{id?} is in the string and replace with apporiate regex
-        $regix = $this->replaceWithRegix("/([\\\]\/\{[a-z]+\?\})/", '(?:\/([\w]*))?', $regix);
-        // below line check if /{id:num} is in the string and replace with apporiate regex
-        $regix = $this->replaceWithRegix('/\/\{[\w]*:num\}/', '(\/[\d]*)?', $regix);
-        return $regix;
-    }
-    private function replaceWithRegix($patternToReplace, $replaceWith, $string)
-    {
-        if (preg_match($patternToReplace, $string, $matches)) {
-            return preg_replace($patternToReplace, $replaceWith, $string);
-        }
-        return $string;
-    }
-    private function combineArr($keys, $values = [])
-    {
-        if (!count($values) && !$keys) {
-            return false;
-        }
-        if (count($keys) != count($values)) {
-            return false;
-        }
-        $result = array();
-
-        foreach ($keys as $i => $k) {
-            $result[$k][] = $values[$i];
-        }
-
-        array_walk($result, function (&$v) {
-            $v = (count($v) == 1) ? array_pop($v) : $v;
-        });
-
-        return $result;
     }
     /* Individual regexes matches approach */
     public function dispatch()
@@ -136,7 +88,7 @@ class Router
                 }
                 } */
                 if ($run) {
-                    $urlParams = $this->combineArr($item['params'], $params); // for $request->params->name
+                    $urlParams = $this->utility->combineArr($item['params'], $params); // for $request->params->name
                     $item['fn'](...$params);
                 } else {
                     echo "canno run";
@@ -164,7 +116,7 @@ class Router
                 for ($i = 1; '' === $matches[$i]; ++$i);
                 $params = [...array_filter(array_slice($matches, 1))];
                 list($fn, $paramsName, $middleware) = $this->closureCollection['GET'][$i - 1];
-                $urlParams = $this->combineArr($paramsName, $params); // for $request->params->name
+                $urlParams = $this->utility->combineArr($paramsName, $params); // for $request->params->name
                 $fn(...$params);
             } else {
                 echo "not Found";

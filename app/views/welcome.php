@@ -4,18 +4,18 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Document</title>
+   <title>MVC</title>
    <style>
       h1 {
-         text-align: center;
          color: green;
+         text-align: center;
       }
    </style>
 </head>
+<h1>MVC Framework</h1>
 
 <body>
 
-   <h1>Closure Based Framework</h1>
 </body>
 
 </html>
