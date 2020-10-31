@@ -6,6 +6,9 @@ require_once __DIR__ . "/../vendor/autoload.php";
 Application::get("/", function () {
    require_once __DIR__ . "/../app/views/welcome.php";
 });
+Application::post('/', function () {
+   echo "post";
+});
 Application::group(['prefix' => '/admin'], function () {
    Application::get("/login", function () {
       echo "login page";

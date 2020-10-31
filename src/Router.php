@@ -37,7 +37,7 @@ class Router
     {
         $this->mapRoutes('GET', $url, $action, $middleware);
     }
-    public function post($url, $action, $middleware)
+    public function post($url, $action, $middleware = [])
     {
         $this->mapRoutes('POST', $url, $action, $middleware);
     }
