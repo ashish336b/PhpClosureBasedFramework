@@ -1,8 +1,9 @@
 <?php
 
-namespace ashish336b\PhpCBF;
+namespace ashish336b\PhpCBF\Routes;
 
 use ashish336b\PhpCBF\abstraction\IRoute;
+use ashish336b\PhpCBF\Utility;
 use Exception;
 
 class Route implements IRoute

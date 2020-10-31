@@ -1,8 +1,9 @@
 <?php
 
-namespace ashish336b\PhpCBF;
+namespace ashish336b\PhpCBF\Dispatch;
 
 use ashish336b\PhpCBF\abstraction\IDispatch;
+use ashish336b\PhpCBF\Routes\Route;
 
 class Dispatch implements IDispatch
 {
