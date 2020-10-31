@@ -5,8 +5,11 @@ use ashish336b\PhpCBF\Application;
 use ashish336b\PhpCBF\Router;
 
 require_once __DIR__ . "/../vendor/autoload.php";
-$env = 0;
+$env = 1;
 if ($env) {
+   Application::get("/", function () {
+      echo "1";
+   });
    Application::group(['prefix' => '/hi'], function () {
       Application::get("/bye/{id}", function ($id) {
          echo "bye $id";
@@ -19,7 +22,7 @@ if ($env) {
          });
       });
    });
-   Application::dispatch();
+   Application::run();
 } else {
    $app = new Router();
    $app->group(['prefix' => "/home", 'middleware' => ["SimpleMiddleware"]], function () use ($app) {
@@ -44,7 +47,7 @@ if ($env) {
    });
 
 
-   $app->dispatch();
+   $app->run();
 }
 
 /* function rutime($ru, $rus, $index)
