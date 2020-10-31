@@ -22,13 +22,13 @@ class Router
         $previousPrefix = $this->currentPrefix;
         $this->currentPrefix = $previousPrefix . $url['prefix'];
         $previousMiddleware = $this->currentMiddleware;
-        $this->currentMiddleware = $this->combineArray($previousMiddleware, $url['middleware']);
+        $this->currentMiddleware = $this->pushArr($previousMiddleware, $url['middleware']);
         $callback();
         $this->currentPrefix = $previousPrefix;
         $this->currentMiddleware = $previousMiddleware;
     }
 
-    private function combineArray($arr1, $arr2)
+    private function pushArr($arr1, $arr2)
     {
         array_push($arr1, ...$arr2);
         return $arr1;
@@ -37,7 +37,7 @@ class Router
     public function get($url, $action, $middleware = [])
     {
         $uriPattern = $this->currentPrefix . $url;
-        $getAllMiddleWare = $this->combineArray($this->currentMiddleware, $middleware);
+        $getAllMiddleWare = $this->pushArr($this->currentMiddleware, $middleware);
 
         $urlRegex = $this->parseUrl($uriPattern);
         $params = $this->getParamsName($uriPattern);

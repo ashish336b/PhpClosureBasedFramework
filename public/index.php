@@ -1,5 +1,4 @@
 <?php
-$rustart = getrusage();
 
 use ashish336b\PhpCBF\Application;
 
