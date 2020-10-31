@@ -157,16 +157,20 @@ class Router
             $this->staticPatternCollection['GET'][$uri][0]();
             return;
         }
-        $regex = implode("|", $this->variablePatternCollection['GET']);
-        $regex = "/^" . "(?:" . $regex . ")$/";
-        if (preg_match($regex, $uri, $matches)) {
-            for ($i = 1; '' === $matches[$i]; ++$i);
-            $params = [...array_filter(array_slice($matches, 1))];
-            list($fn, $paramsName, $middleware) = $this->closureCollection['GET'][$i - 1];
-            $urlParams = $this->combineArr($paramsName, $params); // for $request->params->name
-            $fn(...$params);
+        if (isset($this->variablePatternCollection['GET'])) {
+            $regex = implode("|", $this->variablePatternCollection['GET']);
+            $regex = "/^" . "(?:" . $regex . ")$/";
+            if (preg_match($regex, $uri, $matches)) {
+                for ($i = 1; '' === $matches[$i]; ++$i);
+                $params = [...array_filter(array_slice($matches, 1))];
+                list($fn, $paramsName, $middleware) = $this->closureCollection['GET'][$i - 1];
+                $urlParams = $this->combineArr($paramsName, $params); // for $request->params->name
+                $fn(...$params);
+            } else {
+                echo "not Found";
+            };
         } else {
             echo "not Found";
-        };
+        }
     }
 }
