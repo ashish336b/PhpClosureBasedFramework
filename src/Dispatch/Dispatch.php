@@ -2,11 +2,13 @@
 
 namespace ashish336b\PhpCBF\Dispatch;
 
+use App\controller\AdminController;
 use ashish336b\PhpCBF\abstraction\IDispatch;
 use ashish336b\PhpCBF\Request;
 use ashish336b\PhpCBF\Response;
 use ashish336b\PhpCBF\Routes\Route;
 use ashish336b\PhpCBF\Utility;
+use Closure;
 
 class Dispatch implements IDispatch
 {
@@ -59,6 +61,13 @@ class Dispatch implements IDispatch
             return;
         }
         $request->setRequest($dataToDispatch['urlParams']);
-        $dataToDispatch['fn']($request, $response);
+        if ($dataToDispatch['fn'] instanceof Closure) {
+            $dataToDispatch['fn']($request, $response);
+            return;
+        }
+        $arr = explode('@', $dataToDispatch['fn']);
+        $className = '\App\controller\\' . $arr[0];
+        $controllerObj = new $className();
+        $controllerObj->{$arr[1]}($request, $response);
     }
 }

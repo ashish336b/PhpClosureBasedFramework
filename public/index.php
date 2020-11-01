@@ -1,5 +1,6 @@
 <?php
 
+use App\Controller\AdminController;
 use ashish336b\PhpCBF\Application;
 use ashish336b\PhpCBF\Request;
 use ashish336b\PhpCBF\Response;
@@ -8,6 +9,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 Application::get("/", function () {
    require_once __DIR__ . "/../app/views/welcome.php";
 });
+Application::get("/user", "AdminController@index");
 Application::post('/', function (Request $request, Response $response) {
    return $response->toJSON($_REQUEST);
 });

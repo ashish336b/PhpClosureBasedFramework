@@ -10,7 +10,8 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "ashish336b\\PhpCBF\\": "src/"
+            "ashish336b\\PhpCBF\\": "src/",
+            "App\\": "app/"
         }
     }
 }
