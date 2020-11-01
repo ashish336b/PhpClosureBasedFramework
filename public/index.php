@@ -9,10 +9,11 @@ require_once __DIR__ . "/../vendor/autoload.php";
 Application::get("/", function () {
    require_once __DIR__ . "/../app/views/welcome.php";
 });
-Application::get("/user", "AdminController@index");
+// Application::get("/user/{id?}", "AdminController@index");
 Application::post('/', function (Request $request, Response $response) {
    return $response->toJSON($_REQUEST);
 });
+Application::get("/user/{name}/{id?}", "AdminController@index");
 Application::group(['prefix' => '/admin'], function () {
    Application::get("/login", function () {
       echo "login page";
