@@ -17,7 +17,7 @@ Application::group(['prefix' => '/admin'], function () {
    });
    Application::group(['prefix' => '/setting'], function () {
       Application::get('/{token}/fetch/{id?}', function (Request $request, Response $response) {
-         var_dump($_REQUEST);
+         $response->toJSON($request);
       });
    });
 });
