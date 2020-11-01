@@ -10,37 +10,55 @@ use ashish336b\PhpCBF\Utility;
 
 class Dispatch implements IDispatch
 {
-   private $_route;
+    private $_route;
 
-   public function __construct(Route $route)
-   {
-      $this->_route = $route;
-      $this->_utility = new Utility();
-   }
-   public function dispatch(Request $request, Response $response)
-   {
-      $uri = $request->getUrl();
-      $method = $request->getMethod();
-      if (isset($this->_route->staticPatternCollection[$method][$uri])) {
-         $request->setBody();
-         $this->_route->staticPatternCollection[$method][$uri][0]($request,  $response);
-         return;
-      }
-      if (isset($this->_route->variablePatternCollection[$method])) {
-         $regex = implode("|", $this->_route->variablePatternCollection[$method]);
-         $regex = "/^" . "(?:" . $regex . ")$/";
-         if (preg_match($regex, $uri, $matches)) {
+    public function __construct(Route $route)
+    {
+        $this->_route = $route;
+        $this->_utility = new Utility();
+    }
+    private function getStaticData($method, $uri)
+    {
+        if (isset($this->_route->staticPatternCollection[$method][$uri])) {
+            return ["static" => true, 'fn' => $this->_route->staticPatternCollection[$method][$uri][0], 'middleware' => $this->_route->staticPatternCollection[$method][$uri][1], 'urlParams' => false];
+        }
+        return false;
+    }
+    private function getVariableData($method, $uri)
+    {
+        $regex = implode("|", $this->_route->variablePatternCollection[$method]);
+        $regex = "/^" . "(?:" . $regex . ")$/";
+        if (preg_match($regex, $uri, $matches)) {
             for ($i = 1; '' === $matches[$i]; ++$i);
-            $params = [...array_filter(array_slice($matches, 1))];
             list($fn, $paramsName, $middleware) = $this->_route->closureCollection[$method][$i - 1];
-            $urlParams = $this->_utility->combineArr($paramsName, $params);
-            $request->setRequest($urlParams);
-            $fn($request, $response);
-         } else {
+            $urlParams = $this->_utility->combineArr($paramsName, [...array_filter(array_slice($matches, 1))]);
+            return ['static' => false, 'fn' => $fn, 'middleware' => $middleware, 'urlParams' => $urlParams];
+        }
+        return false;
+    }
+    private function dataToDispatch(Request $request, Response $response)
+    {
+        $uri = $request->getUrl();
+        $method = $request->getMethod();
+        $staticData = $this->getStaticData($method, $uri);
+        if ($staticData) {
+            return $staticData;
+        }
+        $variableData = $this->getVariableData($method, $uri);
+        if ($variableData) {
+            return $variableData;
+        }
+        return false;
+    }
+
+    public function dispatch(Request $request, Response $response)
+    {
+        $dataToDispatch = $this->dataToDispatch($request, $response);
+        if (!$dataToDispatch) {
             echo "not Found";
-         };
-      } else {
-         echo "not Found";
-      }
-   }
+            return;
+        }
+        $request->setRequest($dataToDispatch['urlParams']);
+        $dataToDispatch['fn']($request, $response);
+    }
 }

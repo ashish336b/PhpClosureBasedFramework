@@ -3,7 +3,6 @@
 namespace ashish336b\PhpCBF;
 
 use ashish336b\PhpCBF\Dispatch\Dispatch;
-use ashish336b\PhpCBF\Dispatch\ManualDispatch;
 use ashish336b\PhpCBF\Routes\Route;
 
 class Router
@@ -44,6 +43,14 @@ class Router
     public function post($url, $action, $middleware = [])
     {
         $this->mapRoutes('POST', $url, $action, $middleware);
+    }
+    public function put($url, $action, $middleware = [])
+    {
+        $this->mapRoutes('PUT', $url, $action, $middleware);
+    }
+    public function delete($url, $action, $middleware = [])
+    {
+        $this->mapRoutes('DELETE', $url, $action, $middleware);
     }
     private function mapRoutes($method, $url, $action, $middleware = [])
     {
