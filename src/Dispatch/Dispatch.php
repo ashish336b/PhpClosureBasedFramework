@@ -22,7 +22,8 @@ class Dispatch implements IDispatch
     private function getStaticData($method, $uri)
     {
         if (isset($this->_route->staticPatternCollection[$method][$uri])) {
-            return ["static" => true, 'fn' => $this->_route->staticPatternCollection[$method][$uri][0], 'middleware' => $this->_route->staticPatternCollection[$method][$uri][1], 'urlParams' => false];
+            list($fn, $paramsName, $middleware) = $this->_route->staticPatternCollection[$method][$uri];
+            return ["static" => true, 'fn' => $fn, 'middleware' => $middleware, 'urlParams' => $paramsName];
         }
         return false;
     }

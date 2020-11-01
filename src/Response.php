@@ -13,7 +13,7 @@ class Response
    {
       echo json_encode($obj);
    }
-   public function render($view, $params = null)
+   public function render($view, $params = [])
    {
       return $this->views->render($view, $params);
    }

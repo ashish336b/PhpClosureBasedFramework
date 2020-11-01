@@ -28,13 +28,13 @@ class Route implements IRoute
             if (isset($this->staticPatternCollection[$method][$uriPattern])) {
                 throw new Exception("Cannot add same routes twice : $uriPattern \n");
             }
-            $this->staticPatternCollection[$method][$excep] = [$action, $middleware];
+            $this->staticPatternCollection[$method][$excep] = [$action, $this->_utility->combineArr($params, []), $middleware];
         }
         if ($this->isStaticPattern($uriPattern)) {
             if (isset($this->staticPatternCollection[$method][$uriPattern])) {
                 throw new Exception("Cannot add same routes twice : $uriPattern \n");
             }
-            $this->staticPatternCollection[$method][$uriPattern] = [$action, $middleware];
+            $this->staticPatternCollection[$method][$uriPattern] = [$action, [], $middleware];
         } else {
             if (isset($this->variablePatternCollection[$method])) {
                 if (in_array($urlRegex, $this->variablePatternCollection[$method])) {

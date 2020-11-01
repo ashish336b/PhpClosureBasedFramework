@@ -12,7 +12,7 @@
       }
    </style>
 </head>
-<h1>MVC Framework</h1>
+<h1>MVC Framework <?php echo $ok ?></h1>
 
 <body>
 
