@@ -14,7 +14,7 @@ Application::post('/', function (Request $request, Response $response) {
    return $response->toJSON($_REQUEST);
 });
 Application::get("/user/{id?}", "AdminController@index");
-Application::group(['prefix' => '/admin'], function () {
+Application::group(['prefix' => '/admin', 'middleware' => ['admin']], function () {
    Application::get("/login", function () {
       echo "login page";
    });

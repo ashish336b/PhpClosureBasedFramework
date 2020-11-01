@@ -7,6 +7,10 @@ class Request
    public $params;
    public $body;
    public $query;
+   public function __construct()
+   {
+      $this->params = (object)[];
+   }
    public function getUrl()
    {
       $url =  '/' . trim($_SERVER['REQUEST_URI'], '/');

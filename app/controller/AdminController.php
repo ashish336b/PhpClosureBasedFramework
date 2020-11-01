@@ -9,6 +9,6 @@ class AdminController
 {
    public function index(Request $request, Response $response)
    {
-      echo "hello user";
+      var_dump($request->params);
    }
 }
