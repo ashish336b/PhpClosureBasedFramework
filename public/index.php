@@ -8,8 +8,8 @@ require_once __DIR__ . "/../vendor/autoload.php";
 Application::get("/", function () {
    require_once __DIR__ . "/../app/views/welcome.php";
 });
-Application::post('/', function () {
-   echo "post";
+Application::post('/', function (Request $request, Response $response) {
+   return $response->toJSON($_REQUEST);
 });
 Application::group(['prefix' => '/admin'], function () {
    Application::get("/login", function () {
@@ -17,10 +17,7 @@ Application::group(['prefix' => '/admin'], function () {
    });
    Application::group(['prefix' => '/setting'], function () {
       Application::get('/{token}/fetch/{id?}', function (Request $request, Response $response) {
-
-         return $response->toJson($request->query);
-         return $response->toJson($request->params);
-         require_once __DIR__ . "/../app/views/admin.php";
+         var_dump($_REQUEST);
       });
    });
 });

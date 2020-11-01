@@ -22,7 +22,8 @@ class Dispatch implements IDispatch
       $uri = $request->getUrl();
       $method = $request->getMethod();
       if (isset($this->_route->staticPatternCollection[$method][$uri])) {
-         $this->_route->staticPatternCollection[$method][$uri][0]();
+         $request->setBody();
+         $this->_route->staticPatternCollection[$method][$uri][0]($request,  $response);
          return;
       }
       if (isset($this->_route->variablePatternCollection[$method])) {

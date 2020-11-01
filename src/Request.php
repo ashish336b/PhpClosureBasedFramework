@@ -26,7 +26,6 @@ class Request
    }
    public function setBody()
    {
-      $data = [];
       if ($this->getMethod() == 'GET') {
          foreach ($_GET as $key => $value) {
             $this->query[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -37,9 +36,10 @@ class Request
             $this->body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
          }
       }
-      return $data;
+      $this->body = (object) $this->body;
+      $this->query = (object) $this->query;
    }
-   public function setRequest($params)
+   public function setRequest($params = null)
    {
       $this->setparams($params);
       $this->setBody();
