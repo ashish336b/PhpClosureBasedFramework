@@ -3,6 +3,8 @@
 namespace ashish336b\PhpCBF\Dispatch;
 
 use ashish336b\PhpCBF\abstraction\IDispatch;
+use ashish336b\PhpCBF\Request;
+use ashish336b\PhpCBF\Response;
 use ashish336b\PhpCBF\Routes\Route;
 use ashish336b\PhpCBF\Utility;
 
@@ -15,7 +17,7 @@ class ManualDispatch implements IDispatch
       $this->_route = $route;
       $this->_utility = new Utility();
    }
-   public function dispatch()
+   public function dispatch(Request $request, Response $response)
    {
       $uri = '/' . trim($_SERVER['REQUEST_URI'], '/');
       $notFoundCount = 0;
@@ -28,7 +30,8 @@ class ManualDispatch implements IDispatch
             $run = true;
             if ($run) {
                $urlParams = $this->_utility->combineArr($item['params'], $params); // for $request->params->name
-               $item['fn'](...$params);
+               $request->setParams($urlParams);
+               $item['fn']($request, $response);
             } else {
                echo "cannot run";
             }

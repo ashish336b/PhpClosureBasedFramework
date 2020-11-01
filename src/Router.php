@@ -12,12 +12,15 @@ class Router
     private $_dispatch;
     protected $currentPrefix = '';
     protected $currentMiddleware = [];
-
+    protected $request;
+    protected $response;
     public function __construct()
     {
         $this->_utility = new Utility();
         $this->_route = new Route();
         $this->_dispatch = new Dispatch($this->_route);
+        $this->request = new Request();
+        $this->response = new Response();
     }
     public function group($url, $callback)
     {
@@ -49,6 +52,6 @@ class Router
     }
     public function run()
     {
-        $this->_dispatch->dispatch();
+        $this->_dispatch->dispatch($this->request, $this->response);
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
 use ashish336b\PhpCBF\Application;
+use ashish336b\PhpCBF\Request;
+use ashish336b\PhpCBF\Response;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 Application::get("/", function () {
@@ -14,7 +16,8 @@ Application::group(['prefix' => '/admin'], function () {
       echo "login page";
    });
    Application::group(['prefix' => '/setting'], function () {
-      Application::get('/{token}/fetch/{id?}', function ($id) {
+      Application::get('/{token}/fetch/{id?}', function (Request $request, Response $response) {
+         return $response->toJson($request->params);
          require_once __DIR__ . "/../app/views/admin.php";
       });
    });

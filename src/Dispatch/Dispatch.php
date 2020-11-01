@@ -3,6 +3,8 @@
 namespace ashish336b\PhpCBF\Dispatch;
 
 use ashish336b\PhpCBF\abstraction\IDispatch;
+use ashish336b\PhpCBF\Request;
+use ashish336b\PhpCBF\Response;
 use ashish336b\PhpCBF\Routes\Route;
 use ashish336b\PhpCBF\Utility;
 
@@ -15,7 +17,7 @@ class Dispatch implements IDispatch
       $this->_route = $route;
       $this->_utility = new Utility();
    }
-   public function dispatch()
+   public function dispatch(Request $request, Response $response)
    {
       $uri = '/' . trim($_SERVER['REQUEST_URI'], '/');
       $method = $_SERVER['REQUEST_METHOD'];
@@ -30,8 +32,9 @@ class Dispatch implements IDispatch
             for ($i = 1; '' === $matches[$i]; ++$i);
             $params = [...array_filter(array_slice($matches, 1))];
             list($fn, $paramsName, $middleware) = $this->_route->closureCollection[$method][$i - 1];
-            $urlParams = $this->_utility->combineArr($paramsName, $params); // for $request->params->name
-            $fn(...$params);
+            $urlParams = $this->_utility->combineArr($paramsName, $params);
+            $request->setparams($urlParams);
+            $fn($request, $response);
          } else {
             echo "not Found";
          };

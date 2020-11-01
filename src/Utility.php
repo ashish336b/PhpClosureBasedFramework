@@ -30,6 +30,10 @@ class Utility
       if (!count($values) && !$keys) {
          return false;
       }
+      if (count($keys) > count($values)) {
+         $fill = array_fill(count($values), count($keys) - count($values), null);
+         array_push($values, ...$fill);
+      }
       $result = array();
       foreach ($keys as $i => $k) {
          $result[$k][] = $values[$i];
