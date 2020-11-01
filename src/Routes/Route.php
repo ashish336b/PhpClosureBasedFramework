@@ -23,6 +23,13 @@ class Route implements IRoute
         $params = $this->_utility->getPlaceholderName($uriPattern);
         $this->routeCollection[$method][] = ['fn' => $action, 'pattern' => $urlRegex, 'params' =>
         $params, 'middleware' => $middleware];
+        $excep = $this->checkFirstOptPattern($uriPattern);
+        if ($excep && $this->isStaticPattern($excep)) {
+            if (isset($this->staticPatternCollection[$method][$uriPattern])) {
+                throw new Exception("Cannot add same routes twice : $uriPattern \n");
+            }
+            $this->staticPatternCollection[$method][$excep] = [$action, $middleware];
+        }
         if ($this->isStaticPattern($uriPattern)) {
             if (isset($this->staticPatternCollection[$method][$uriPattern])) {
                 throw new Exception("Cannot add same routes twice : $uriPattern \n");
@@ -45,5 +52,12 @@ class Route implements IRoute
             return false;
         }
         return true;
+    }
+    private function checkFirstOptPattern($uriPattern)
+    {
+        if (!$this->isStaticPattern($uriPattern)) {
+            return preg_replace('/\/\{[a-z]+\?\}/', "", $uriPattern);
+        }
+        return false;
     }
 }

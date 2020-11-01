@@ -13,7 +13,7 @@ Application::get("/", function () {
 Application::post('/', function (Request $request, Response $response) {
    return $response->toJSON($_REQUEST);
 });
-Application::get("/user/{name}/{id?}", "AdminController@index");
+Application::get("/user/{id?}", "AdminController@index");
 Application::group(['prefix' => '/admin'], function () {
    Application::get("/login", function () {
       echo "login page";

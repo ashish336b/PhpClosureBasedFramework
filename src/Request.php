@@ -18,7 +18,11 @@ class Request
    }
    public function setparams($params)
    {
-      $this->params = (object) $params;
+      if ($params) {
+         $this->params = (object) $params;
+      } else {
+         $this->params = false;
+      }
    }
    public function getMethod()
    {
