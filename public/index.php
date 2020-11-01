@@ -12,7 +12,7 @@ Application::get("/", function (Request $request, Response $response) {
 });
 Application::get("/user/{id?}", "AdminController@index");
 Application::post('/', function (Request $request, Response $response) {
-   return $response->toJSON($_REQUEST);
+   return $response->toJSON($request);
 });
 Application::group(['prefix' => '/admin', 'middleware' => ['admin']], function () {
    Application::get("/login", function () {
@@ -20,7 +20,10 @@ Application::group(['prefix' => '/admin', 'middleware' => ['admin']], function (
    });
    Application::group(['prefix' => '/setting'], function () {
       Application::get('/{token}/fetch/{id?}', function (Request $request, Response $response) {
-         $response->toJSON($request);
+         return $response->toJSON($request);
+      });
+      Application::post('/new/{id}', function (Request $request, Response $response) {
+         return $response->toJSON($request);
       });
    });
 });

@@ -11,6 +11,7 @@ class Response
    }
    public function toJSON($obj)
    {
+      header('Content-Type: application/json');
       echo json_encode($obj);
    }
    public function render($view, $params = [])
