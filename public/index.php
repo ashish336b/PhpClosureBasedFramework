@@ -17,6 +17,8 @@ Application::group(['prefix' => '/admin'], function () {
    });
    Application::group(['prefix' => '/setting'], function () {
       Application::get('/{token}/fetch/{id?}', function (Request $request, Response $response) {
+
+         return $response->toJson($request->query);
          return $response->toJson($request->params);
          require_once __DIR__ . "/../app/views/admin.php";
       });

@@ -3,6 +3,7 @@
 namespace ashish336b\PhpCBF;
 
 use ashish336b\PhpCBF\Dispatch\Dispatch;
+use ashish336b\PhpCBF\Dispatch\ManualDispatch;
 use ashish336b\PhpCBF\Routes\Route;
 
 class Router

@@ -19,9 +19,10 @@ class ManualDispatch implements IDispatch
    }
    public function dispatch(Request $request, Response $response)
    {
-      $uri = '/' . trim($_SERVER['REQUEST_URI'], '/');
+      $uri = $request->getUrl();
+      $method = $request->getMethod();
       $notFoundCount = 0;
-      foreach ($this->_route->routeCollection['GET'] as $item) {
+      foreach ($this->_route->routeCollection[$method] as $item) {
          if (preg_match_all('#^' . $item['pattern'] . '$#', $uri, $matches, PREG_OFFSET_CAPTURE)) {
             $matches = array_slice($matches, 1);
             $params = array_map(function ($match, $index) use ($matches) {
@@ -29,8 +30,8 @@ class ManualDispatch implements IDispatch
             }, $matches, array_keys($matches));
             $run = true;
             if ($run) {
-               $urlParams = $this->_utility->combineArr($item['params'], $params); // for $request->params->name
-               $request->setParams($urlParams);
+               $urlParams = $this->_utility->combineArr($item['params'], $params);
+               $request->setRequest($urlParams);
                $item['fn']($request, $response);
             } else {
                echo "cannot run";

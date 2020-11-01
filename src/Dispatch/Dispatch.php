@@ -19,8 +19,8 @@ class Dispatch implements IDispatch
    }
    public function dispatch(Request $request, Response $response)
    {
-      $uri = '/' . trim($_SERVER['REQUEST_URI'], '/');
-      $method = $_SERVER['REQUEST_METHOD'];
+      $uri = $request->getUrl();
+      $method = $request->getMethod();
       if (isset($this->_route->staticPatternCollection[$method][$uri])) {
          $this->_route->staticPatternCollection[$method][$uri][0]();
          return;
@@ -33,7 +33,7 @@ class Dispatch implements IDispatch
             $params = [...array_filter(array_slice($matches, 1))];
             list($fn, $paramsName, $middleware) = $this->_route->closureCollection[$method][$i - 1];
             $urlParams = $this->_utility->combineArr($paramsName, $params);
-            $request->setparams($urlParams);
+            $request->setRequest($urlParams);
             $fn($request, $response);
          } else {
             echo "not Found";
