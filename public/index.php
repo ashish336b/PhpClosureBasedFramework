@@ -6,14 +6,14 @@ use ashish336b\PhpCBF\Request;
 use ashish336b\PhpCBF\Response;
 
 require_once __DIR__ . "/../vendor/autoload.php";
-Application::get("/", function () {
-   require_once __DIR__ . "/../app/views/welcome.php";
+Application::$path = __DIR__ . "/../";
+Application::get("/", function (Request $request, Response $response) {
+   return $response->render("/welcome");
 });
-// Application::get("/user/{id?}", "AdminController@index");
+Application::get("/user/{id?}", "AdminController@index");
 Application::post('/', function (Request $request, Response $response) {
    return $response->toJSON($_REQUEST);
 });
-Application::get("/user/{id?}", "AdminController@index");
 Application::group(['prefix' => '/admin', 'middleware' => ['admin']], function () {
    Application::get("/login", function () {
       echo "login page";

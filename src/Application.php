@@ -6,6 +6,7 @@ class Application
 {
    public static $router;
    public static $_instance = null;
+   public static $path = '';
    public  function __construct()
    {
       self::$router = new Router();

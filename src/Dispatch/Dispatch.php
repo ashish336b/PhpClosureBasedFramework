@@ -62,12 +62,12 @@ class Dispatch implements IDispatch
         }
         $request->setRequest($dataToDispatch['urlParams']);
         if ($dataToDispatch['fn'] instanceof Closure) {
-            $dataToDispatch['fn']($request, $response);
+            echo $dataToDispatch['fn']($request, $response);
             return;
         }
         $arr = explode('@', $dataToDispatch['fn']);
         $className = '\App\controller\\' . $arr[0];
         $controllerObj = new $className();
-        $controllerObj->{$arr[1]}($request, $response);
+        echo $controllerObj->{$arr[1]}($request, $response);
     }
 }

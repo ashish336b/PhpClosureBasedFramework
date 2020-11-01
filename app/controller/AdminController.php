@@ -9,6 +9,6 @@ class AdminController
 {
    public function index(Request $request, Response $response)
    {
-      var_dump($request->params);
+      return $response->render('/admin');
    }
 }
