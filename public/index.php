@@ -9,12 +9,12 @@ require_once __DIR__ . "/../vendor/autoload.php";
 Application::$path = __DIR__ . "/../";
 Application::get("/", function (Request $request, Response $response) {
    return $response->render("/welcome", ["ok" => 1]);
-}, ['Auth', 'CheckName']);
+}, ['Auth']);
 Application::get("/user/{id?}", "AdminController@index");
 Application::post('/', function (Request $request, Response $response) {
    return $response->toJSON($request);
 });
-Application::group(['prefix' => '/admin', 'middleware' => ['admin']], function () {
+Application::group(['prefix' => '/admin', 'middleware' => ['Auth']], function () {
    Application::get("/login", function () {
       echo "login page";
    });

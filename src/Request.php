@@ -20,12 +20,26 @@ class Request
       }
       return $url;
    }
+   public function query($name)
+   {
+      if (property_exists($this->query, $name)) {
+         return $this->query->{$name};
+      }
+      return null;
+   }
+   public function body($name)
+   {
+      if (property_exists($this->body, $name)) {
+         return $this->query->{$name};
+      }
+      return null;
+   }
    public function setparams($params)
    {
       if ($params) {
          $this->params = (object) $params;
       } else {
-         $this->params = false;
+         $this->params = (object)[];
       }
    }
    public function getMethod()
