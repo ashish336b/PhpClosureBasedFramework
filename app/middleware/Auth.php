@@ -9,7 +9,7 @@ class Auth
 {
    public function run(Request $request, Response $response)
    {
-      if ($request->query("hello") == 'ashish') {
+      if ($request->query("ok") == 'ashish') {
          return $response->toJSON(['error' => true, 'message' => "Not Authenticated"]);
       }
       return true;
