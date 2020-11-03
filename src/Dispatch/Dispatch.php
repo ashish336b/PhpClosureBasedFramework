@@ -74,7 +74,9 @@ class Dispatch implements IDispatch
         $controllerObj = new $className();
         if ($this->dispatchMiddleware($dataToDispatch['middleware'], $request, $response)) {
             echo $controllerObj->{$arr[1]}($request, $response);
+            return;
         }
+        return;
     }
     public function dispatchMiddleware($middlewares, $request, $response)
     {
