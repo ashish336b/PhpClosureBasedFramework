@@ -4,7 +4,9 @@ namespace ashish336b\PhpCBF;
 
 class Controller
 {
-   public function __construct()
+   public  $middleware = [];
+   public function setMiddleware($middleware)
    {
+      array_push($middleware, ...$middleware);
    }
 }

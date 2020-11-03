@@ -63,12 +63,30 @@ class Dispatch implements IDispatch
         }
         $request->setRequest($dataToDispatch['urlParams']);
         if ($dataToDispatch['fn'] instanceof Closure) {
-            echo $dataToDispatch['fn']($request, $response);
+            if ($this->dispatchMiddleware($dataToDispatch['middleware'], $request, $response)) {
+                echo $dataToDispatch['fn']($request, $response);
+                return;
+            }
             return;
         }
         $arr = explode('@', $dataToDispatch['fn']);
         $className = '\App\controller\\' . $arr[0];
         $controllerObj = new $className();
-        echo $controllerObj->{$arr[1]}($request, $response);
+        if ($this->dispatchMiddleware($dataToDispatch['middleware'], $request, $response)) {
+            echo $controllerObj->{$arr[1]}($request, $response);
+        }
+    }
+    public function dispatchMiddleware($middlewares, $request, $response)
+    {
+        foreach ($middlewares as $item) {
+            $className = '\App\middleware\\' . $item;
+            $obj = new $className();
+            $isAllowed = $obj->run($request, $response);
+            if ($isAllowed !== true) {
+                echo $isAllowed;
+                return false;
+            }
+        }
+        return true;
     }
 }
