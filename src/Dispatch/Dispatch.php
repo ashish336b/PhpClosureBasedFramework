@@ -44,10 +44,10 @@ class Dispatch implements IDispatch
     private function getVariableData($method, $uri)
     {
         $regex = implode("|", $this->_route->variablePatternCollection[$method]);
-        $regex = "/^" . "(?:" . $regex . ")$/";
+        $regex = "~^" . "(?:" . $regex . ")$~x";
         if (preg_match($regex, $uri, $matches)) {
             for ($i = 1; '' === $matches[$i]; ++$i);
-            list($fn, $paramsName, $middleware) = $this->_route->closureCollection[$method][$i - 1];
+            list($fn, $paramsName, $middleware) = $this->_route->closureCollection[$method][$i];
             $urlParams = $this->_utility->combineArr($paramsName, [...array_filter(array_slice($matches, 1))]);
             return ['static' => false, 'fn' => $fn, 'middleware' => $middleware, 'urlParams' => $urlParams];
         }

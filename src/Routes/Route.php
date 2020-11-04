@@ -51,7 +51,13 @@ class Route implements IRoute
                     throw new Exception("Cannot add same routes twice : $uriPattern \n");
                 }
             }
-            $this->closureCollection[$method][] = [$action, $params, $middleware];
+            if (!sizeof($this->closureCollection[$method])) {
+                $this->closureCollection[$method][1] = [$action, $params, $middleware];
+            } else {
+                $getMaxIndex = max(array_keys($this->closureCollection[$method]));
+                $index = $getMaxIndex + count($this->closureCollection[$method][$getMaxIndex][1]);
+                $this->closureCollection[$method][$index] = [$action, $params, $middleware];
+            }
             $this->variablePatternCollection[$method][] = $urlRegex;
         }
     }

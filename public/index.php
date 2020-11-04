@@ -6,7 +6,7 @@ use ashish336b\PhpCBF\Response;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 Application::$path = __DIR__ . "/../";
-Application::get("/hello/ok/{userid?}", function (Request $request, Response $response) {
+Application::get("/hello/ok/{hello}/{userid?}", function (Request $request, Response $response) {
    echo $response->toJSON($request);
 }, ['Auth']);
 Application::get("/user/hello", function (Request $request, Response $response) {
@@ -30,6 +30,9 @@ Application::group(['prefix' => '/admin', 'middleware' => ['Auth']], function ()
          return $response->toJSON($request);
       });
    });
+});
+Application::get("/admin/ok/hello/setting/{token}/{id}", function () {
+   echo "hello admin ok hello setting";
 });
 Application::run();
 
