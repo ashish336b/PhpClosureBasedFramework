@@ -9,6 +9,9 @@ Application::$path = __DIR__ . "/../";
 Application::get("/{id?}", function (Request $request, Response $response) {
    echo $response->render("/welcome", ["ok" => 1]);
 }, ['Auth']);
+Application::get("/user/hello", function (Request $request, Response $response) {
+   echo $response->toJSON($request);
+});
 Application::get("/user/{id?}", "AdminController@index");
 Application::post('/', function (Request $request, Response $response) {
    return $response->toJSON($request);
