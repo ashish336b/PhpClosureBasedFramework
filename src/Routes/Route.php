@@ -56,7 +56,8 @@ class Route implements IRoute
     private function checkFirstOptPattern($uriPattern)
     {
         if (!$this->isStaticPattern($uriPattern)) {
-            return preg_replace('/\/\{[a-z]+\?\}/', "", $uriPattern);
+            $pattern = preg_replace('/\/\{[a-z]+\?\}/', "", $uriPattern);
+            return $pattern ? $pattern : "/";
         }
         return false;
     }

@@ -64,7 +64,7 @@ class Dispatch implements IDispatch
         $request->setRequest($dataToDispatch['urlParams']);
         if ($dataToDispatch['fn'] instanceof Closure) {
             if ($this->dispatchMiddleware($dataToDispatch['middleware'], $request, $response)) {
-                echo $dataToDispatch['fn']($request, $response);
+                $dataToDispatch['fn']($request, $response);
                 return;
             }
             return;
@@ -73,7 +73,7 @@ class Dispatch implements IDispatch
         $className = '\App\controller\\' . $arr[0];
         $controllerObj = new $className();
         if ($this->dispatchMiddleware($dataToDispatch['middleware'], $request, $response)) {
-            echo $controllerObj->{$arr[1]}($request, $response);
+            $controllerObj->{$arr[1]}($request, $response);
             return;
         }
         return;

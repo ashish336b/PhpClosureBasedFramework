@@ -7,8 +7,8 @@ use ashish336b\PhpCBF\Response;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 Application::$path = __DIR__ . "/../";
-Application::get("/", function (Request $request, Response $response) {
-   return $response->render("/welcome", ["ok" => 1]);
+Application::get("/{id?}", function (Request $request, Response $response) {
+   echo $response->render("/welcome", ["ok" => 1]);
 }, ['Auth']);
 Application::get("/user/{id?}", "AdminController@index");
 Application::post('/', function (Request $request, Response $response) {
