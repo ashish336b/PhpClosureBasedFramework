@@ -9,6 +9,6 @@ class AdminController
 {
    public function index(Request $request, Response $response)
    {
-      return $response->toJSON($request->params);
+      return $response->toJSON($request);
    }
 }

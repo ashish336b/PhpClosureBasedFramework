@@ -13,7 +13,6 @@ use Closure;
 class Dispatch implements IDispatch
 {
     private $_route;
-
     public function __construct(Route $route)
     {
         $this->_route = $route;
@@ -61,7 +60,7 @@ class Dispatch implements IDispatch
             echo "not Found";
             return;
         }
-        $request->setRequest($dataToDispatch['urlParams']);
+        $this->initRequest($request, $dataToDispatch['urlParams']);
         if ($dataToDispatch['fn'] instanceof Closure) {
             if ($this->dispatchMiddleware($dataToDispatch['middleware'], $request, $response)) {
                 $dataToDispatch['fn']($request, $response);
@@ -90,5 +89,12 @@ class Dispatch implements IDispatch
             }
         }
         return true;
+    }
+
+    private function initRequest($request, $params)
+    {
+
+        $request->setparams($params);
+        $request->setBody();
     }
 }

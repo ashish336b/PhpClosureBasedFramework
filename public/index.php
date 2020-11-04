@@ -21,7 +21,7 @@ Application::group(['prefix' => '/admin', 'middleware' => ['Auth']], function ()
       Application::get('/{token}/fetch/{id?}', function (Request $request, Response $response) {
          return $response->toJSON($request);
       });
-      Application::post('/new/{id}', function (Request $request, Response $response) {
+      Application::put('/new/{id}', function (Request $request, Response $response) {
          return $response->toJSON($request);
       });
    });

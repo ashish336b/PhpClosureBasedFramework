@@ -61,9 +61,4 @@ class Request
       $this->body = (object) $this->body;
       $this->query = (object) $this->query;
    }
-   public function setRequest($params = false)
-   {
-      $this->setparams($params);
-      $this->setBody();
-   }
 }
