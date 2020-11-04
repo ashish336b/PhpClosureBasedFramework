@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php $this->extend("layout_name", "layouts/layout"); ?>
 
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Document</title>
-</head>
-<h1>Admin Setting Page</h1><?php echo $adminName ?>
+<h1>Body</h1>
 
-<body>
-
-</body>
-
-</html>
+<?php $this->end() ?>

@@ -12,7 +12,7 @@ App::group(["prefix" => '/admin'], function () {
    App::get("/profile/{id}/hello/{userid}/{one}/{two}/{three}/{ok?}/{hello?}/{next?}", 'AdminController@index');
    App::get("/profile/{id}/hello", 'AdminController@index');
 });
-App::get("/user", 'AdminController@index');
+App::get("/user", 'AdminController@user');
 App::run();
 
    //test urls
