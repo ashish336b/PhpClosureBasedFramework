@@ -1,5 +1,3 @@
-<?php $this->extend("layout_name", "layouts/layout"); ?>
-
-<h1>Body</h1>
-
+<?php $this->extend("layout_1", "partials/layout"); ?>
+<h1>Body <?php echo $ok ?></h1>
 <?php $this->end() ?>

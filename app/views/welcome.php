@@ -12,9 +12,9 @@
       }
    </style>
 </head>
-<?php $this->include("/layouts/header") ?>
+<?php $this->include("/partials/header") ?>
 <h1>MVC Framework <?php echo $ok ?></h1>
-<?php $this->include("/layouts/footer") ?>
+<?php $this->include("/partials/footer") ?>
 
 <body>
 

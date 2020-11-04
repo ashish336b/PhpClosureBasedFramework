@@ -4,7 +4,7 @@ namespace ashish336b\PhpCBF;
 
 class Views
 {
-   private $_content;
+   private $_content = "";
    private $_str;
    public function render($view, array $params = [])
    {
@@ -41,5 +41,6 @@ class Views
    public function end()
    {
       echo $this->getcontent($this->_str);
+      $this->_content = '';
    }
 }
