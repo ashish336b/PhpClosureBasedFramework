@@ -9,6 +9,7 @@ class AdminController
 {
    public function index(Request $request, Response $response)
    {
+      $request->url = $request->getUrl();
       return $response->toJSON($request);
    }
 }

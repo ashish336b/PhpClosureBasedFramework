@@ -6,6 +6,14 @@ use ashish336b\PhpCBF\Response;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 Application::$path = __DIR__ . "/../";
+
+
+/* Test Case 1 */
+Application::get("/", "AdminController@index");
+Application::get("/test/{one?}", "AdminController@index");
+Application::get("/test/{one}/{two}/{three}", "AdminController@index");
+Application::get("/test/{one}/{two?}", "AdminController@index");
+
 Application::get("/hello/ok/{hello}/{userid?}", function (Request $request, Response $response) {
    echo $response->toJSON($request);
 }, ['Auth']);
