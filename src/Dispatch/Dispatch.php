@@ -2,7 +2,6 @@
 
 namespace ashish336b\PhpCBF\Dispatch;
 
-use App\controller\AdminController;
 use ashish336b\PhpCBF\abstraction\IDispatch;
 use ashish336b\PhpCBF\Request;
 use ashish336b\PhpCBF\Response;
@@ -18,6 +17,14 @@ class Dispatch implements IDispatch
         $this->_route = $route;
         $this->_utility = new Utility();
     }
+    /**
+     * getStaticData
+     * Description : If request URL matches static pattern it return all data associated with routes
+     *               like params , middleware, closure, body , query
+     * @param  mixed $method
+     * @param  mixed $uri
+     * @return void
+     */
     private function getStaticData($method, $uri)
     {
         if (isset($this->_route->staticPatternCollection[$method][$uri])) {
@@ -26,6 +33,14 @@ class Dispatch implements IDispatch
         }
         return false;
     }
+    /**
+     * getVariableData
+     * Description : matches all variable pattern with requested URL. It it matches return all
+     *               data associated with the routes like params , query , body, middleware, closure
+     * @param  mixed $method
+     * @param  mixed $uri
+     * @return void
+     */
     private function getVariableData($method, $uri)
     {
         $regex = implode("|", $this->_route->variablePatternCollection[$method]);
@@ -38,6 +53,13 @@ class Dispatch implements IDispatch
         }
         return false;
     }
+    /**
+     * dataToDispatch
+     *
+     * @param  mixed $request
+     * @param  mixed $response
+     * @return void
+     */
     private function dataToDispatch(Request $request, Response $response)
     {
         $uri = $request->getUrl();
@@ -53,6 +75,13 @@ class Dispatch implements IDispatch
         return false;
     }
 
+    /**
+     * dispatch
+     *
+     * @param  mixed $request
+     * @param  mixed $response
+     * @return void
+     */
     public function dispatch(Request $request, Response $response)
     {
         $dataToDispatch = $this->dataToDispatch($request, $response);
@@ -77,6 +106,14 @@ class Dispatch implements IDispatch
         }
         return;
     }
+    /**
+     * dispatchMiddleware
+     *
+     * @param  mixed $middlewares
+     * @param  mixed $request
+     * @param  mixed $response
+     * @return void
+     */
     public function dispatchMiddleware($middlewares, $request, $response)
     {
         foreach ($middlewares as $item) {
@@ -91,6 +128,13 @@ class Dispatch implements IDispatch
         return true;
     }
 
+    /**
+     * initRequest
+     *
+     * @param  mixed $request
+     * @param  mixed $params
+     * @return void
+     */
     private function initRequest($request, $params)
     {
 

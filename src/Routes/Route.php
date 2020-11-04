@@ -87,7 +87,10 @@ class Route implements IRoute
     }
     /**
      * validateStaticPattern
-     *
+     * Description : If static pattern is added it's check if already added variable pattern matches *               with currently added static pattern if it matches then its throw errors else it *               return true
+     *               Example : you should not add /user/home after adding routes /user/{id} since
+     *               /user/{id} matches /user/home that helps to remove conflict 
+     *               you can add /user/{id} after /user/home.
      * @param  mixed $method
      * @param  mixed $pattern
      * @return void
