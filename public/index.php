@@ -1,6 +1,5 @@
 <?php
 
-use App\Controller\AdminController;
 use ashish336b\PhpCBF\Application;
 use ashish336b\PhpCBF\Request;
 use ashish336b\PhpCBF\Response;

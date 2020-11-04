@@ -34,6 +34,7 @@ class Route implements IRoute
             if (isset($this->staticPatternCollection[$method][$uriPattern])) {
                 throw new Exception("Cannot add same routes twice : $uriPattern \n");
             }
+            $this->validateStaticPattern($method, $uriPattern);
             $this->staticPatternCollection[$method][$uriPattern] = [$action, [], $middleware];
         } else {
             if (isset($this->variablePatternCollection[$method])) {
@@ -60,5 +61,14 @@ class Route implements IRoute
             return $pattern ? $pattern : "/";
         }
         return false;
+    }
+    public function validateStaticPattern($method, $pattern)
+    {
+        $regex = implode("|", $this->variablePatternCollection[$method]);
+        $regex = "/^" . "(?:" . $regex . ")$/";
+        if (preg_match($regex, $pattern, $matches)) {
+            throw new Exception("$pattern that matches variable pattern is already registered");
+        }
+        return true;
     }
 }
