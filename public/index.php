@@ -10,8 +10,8 @@ Application::$path = __DIR__ . "/../";
 
 /* Test Case 1 */
 Application::get("/", "AdminController@index");
-Application::get("/test/{one?}", "AdminController@index");
-Application::get("/test/{one}/{two}/{three}", "AdminController@index");
+Application::get("/test/{one?}", "AdminController@index", ["Auth", "TokenVerify"]);
+Application::get("/test/{one}/{two}/{three}/{four}/{five?}", "AdminController@index");
 Application::get("/test/{one}/{two?}", "AdminController@index");
 
 Application::get("/hello/ok/{hello}/{userid?}", function (Request $request, Response $response) {
