@@ -108,6 +108,7 @@ class Router
     private function mapRoutes($method, $url, $action, $middleware = [])
     {
         $uriPattern = $this->currentPrefix . $url;
+        $uriPattern = rtrim($uriPattern, "/"); // convert /user/home/ to /user/home
         $getAllMiddleWare = $this->_utility->pushArr($this->currentMiddleware, $middleware);
         $this->_route->addRoutes($method, $uriPattern, $action, $getAllMiddleWare);
     }
