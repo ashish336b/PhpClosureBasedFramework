@@ -13,6 +13,8 @@ App::group(["prefix" => '/admin'], function () {
    App::get("/profile/{id}/hello", 'AdminController@index');
 });
 App::get("/user", 'AdminController@user');
+App::get("/user/{id}/{hello?}", 'AdminController@index');
+App::get("/bhola/{id}", 'AdminController@index');
 App::run();
 
    //test urls
