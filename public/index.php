@@ -6,14 +6,15 @@ use ashish336b\PhpCBF\Response;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 Application::$path = __DIR__ . "/../";
-Application::get("/hello/ok/{userid?}/{id?}", function (Request $request, Response $response) {
+Application::get("/hello/ok/{userid?}", function (Request $request, Response $response) {
    echo $response->toJSON($request);
-   // echo $response->render("/welcome", ["ok" => 1]);
 }, ['Auth']);
 Application::get("/user/hello", function (Request $request, Response $response) {
+   echo "hello\n";
    echo $response->toJSON($request);
 });
-Application::get("/user/{id?}", "AdminController@index");
+Application::get("/user/{ok}/{id?}", "AdminController@index");
+
 Application::post('/', function (Request $request, Response $response) {
    return $response->toJSON($request);
 });
