@@ -11,6 +11,11 @@ class Request
    {
       $this->params = (object)[];
    }
+   /**
+    * getUrl
+    *
+    * @return void
+    */
    public function getUrl()
    {
       $url =  '/' . trim($_SERVER['REQUEST_URI'], '/');
@@ -20,6 +25,12 @@ class Request
       }
       return $url;
    }
+   /**
+    * query
+    *
+    * @param  mixed $name
+    * @return void
+    */
    public function query($name)
    {
       if (property_exists($this->query, $name)) {
@@ -27,6 +38,12 @@ class Request
       }
       return null;
    }
+   /**
+    * body
+    *
+    * @param  mixed $name
+    * @return void
+    */
    public function body($name)
    {
       if (property_exists($this->body, $name)) {
@@ -34,6 +51,12 @@ class Request
       }
       return null;
    }
+   /**
+    * setparams
+    *
+    * @param  mixed $params
+    * @return void
+    */
    public function setparams($params)
    {
       if ($params) {
@@ -42,10 +65,20 @@ class Request
          $this->params = (object)[];
       }
    }
+   /**
+    * getMethod
+    *
+    * @return void
+    */
    public function getMethod()
    {
       return $_SERVER['REQUEST_METHOD'];
    }
+   /**
+    * setBody
+    *
+    * @return void
+    */
    public function setBody()
    {
       if ($this->getMethod() == 'GET') {

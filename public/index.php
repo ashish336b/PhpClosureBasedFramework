@@ -6,8 +6,9 @@ use ashish336b\PhpCBF\Response;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 Application::$path = __DIR__ . "/../";
-Application::get("/{id?}", function (Request $request, Response $response) {
-   echo $response->render("/welcome", ["ok" => 1]);
+Application::get("/hello/ok/{userid?}/{id?}", function (Request $request, Response $response) {
+   echo $response->toJSON($request);
+   // echo $response->render("/welcome", ["ok" => 1]);
 }, ['Auth']);
 Application::get("/user/hello", function (Request $request, Response $response) {
    echo $response->toJSON($request);

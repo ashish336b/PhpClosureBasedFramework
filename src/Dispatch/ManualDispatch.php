@@ -1,4 +1,5 @@
 <?php
+/* this class should me maintained for now dispatch logic is implemented by Dispatch Class */
 
 namespace ashish336b\PhpCBF\Dispatch;
 

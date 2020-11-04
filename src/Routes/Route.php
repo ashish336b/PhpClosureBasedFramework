@@ -17,6 +17,15 @@ class Route implements IRoute
     {
         $this->_utility = new Utility();
     }
+    /**
+     * addRoutes
+     *
+     * @param  mixed $method
+     * @param  mixed $uriPattern
+     * @param  mixed $action
+     * @param  mixed $middleware
+     * @return void
+     */
     public function addRoutes($method, $uriPattern, $action, $middleware = [])
     {
         $urlRegex = $this->_utility->parseURI($uriPattern);
@@ -46,6 +55,12 @@ class Route implements IRoute
             $this->variablePatternCollection[$method][] = $urlRegex;
         }
     }
+    /**
+     * isStaticPattern
+     *
+     * @param  mixed $uriPattern
+     * @return void
+     */
     private function isStaticPattern($uriPattern)
     {
         str_replace("/", "\/", $uriPattern);
@@ -54,6 +69,14 @@ class Route implements IRoute
         }
         return true;
     }
+    /**
+     * checkFirstOptPattern
+     * Description : check if optional params appears first /user/{id?} without required params     *               appearing in first 
+     *               for /user/{id?} => return /user
+     *               for /user/{id}/{pid?} => return false
+     * @param  mixed $uriPattern
+     * @return void
+     */
     private function checkFirstOptPattern($uriPattern)
     {
         if (!$this->isStaticPattern($uriPattern)) {
@@ -62,6 +85,13 @@ class Route implements IRoute
         }
         return false;
     }
+    /**
+     * validateStaticPattern
+     *
+     * @param  mixed $method
+     * @param  mixed $pattern
+     * @return void
+     */
     public function validateStaticPattern($method, $pattern)
     {
         $regex = implode("|", $this->variablePatternCollection[$method]);
