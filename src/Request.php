@@ -8,12 +8,17 @@ class Request
    public $body;
    public $query;
    public $protocol;
+   public $host;
+   public $fullURL;
    private $header;
    public function __construct()
    {
       $this->params = (object)[];
       $this->protocol = $this->protocol();
       $this->setRequestedHeaders();
+      $this->setHost();
+      $this->setBody();
+      $this->fullURL = $this->protocol . $this->host . $this->getUrl();
    }
    /**
     * getUrl
@@ -28,6 +33,15 @@ class Request
          $url = substr($url, 0, $position);
       }
       return $url;
+   }
+   /**
+    * setHost
+    *
+    * @return void
+    */
+   private function setHost()
+   {
+      $this->host = $this->header('Host');
    }
    /**
     * query
@@ -83,7 +97,7 @@ class Request
     *
     * @return void
     */
-   public function setBody()
+   private function setBody()
    {
       if ($this->getMethod() == 'POST') {
          if (isset($this->setRequestedHeaders()['Content-Type']) && $this->setRequestedHeaders()['Content-Type'] == "application/json") {
@@ -109,7 +123,12 @@ class Request
       $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, strpos($_SERVER["SERVER_PROTOCOL"], '/'))) . '://';
       return $protocol;
    }
-   public function setRequestedHeaders()
+   /**
+    * setRequestedHeaders
+    * Description : Set all requested header to header property.
+    * @return void
+    */
+   private function setRequestedHeaders()
    {
       $headers = array();
       foreach ($_SERVER as $key => $value) {

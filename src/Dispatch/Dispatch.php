@@ -139,6 +139,5 @@ class Dispatch implements IDispatch
     {
 
         $request->setparams($params);
-        $request->setBody();
     }
 }
