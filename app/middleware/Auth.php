@@ -9,7 +9,7 @@ class Auth
 {
    public function run(Request $request, Response $response)
    {
-      // return $response->toJSON(["hello" => "ok"]);
-      return true;
+      return $response->toJSON(["hello" => "ok"]);
+      // return true;
    }
 }

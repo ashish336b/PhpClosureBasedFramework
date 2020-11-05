@@ -95,6 +95,7 @@ class Dispatch implements IDispatch
         if ($dataToDispatch['fn'] instanceof Closure) {
             if ($this->dispatchMiddleware($dataToDispatch['middleware'], $request, $response)) {
                 $dataToDispatch['fn']($request, $response);
+                $this->dispatchAfterEvent();
                 return;
             }
             return;
@@ -104,6 +105,7 @@ class Dispatch implements IDispatch
         $controllerObj = new $className();
         if ($this->dispatchMiddleware($dataToDispatch['middleware'], $request, $response)) {
             $controllerObj->{$arr[1]}($request, $response);
+            $this->dispatchAfterEvent();
             return;
         }
         return;
@@ -146,6 +148,12 @@ class Dispatch implements IDispatch
     {
         $closureArr = Application::$appEvent;
         foreach ($closureArr['before'] as $item) {
+            $item();
+        }
+    }
+    private function dispatchAfterEvent()
+    {
+        foreach (Application::$appEvent['after'] as $item) {
             $item();
         }
     }

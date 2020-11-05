@@ -10,6 +10,9 @@ App::$path = __DIR__ . "/../";
 App::on("BEFORE", function () {
    /* For CORS HEADER */
 });
+App::on("AFTER", function () {
+   /* For Code to run after response if needed */
+});
 /* Test Case 1 */
 App::group(["prefix" => '/admin'], function () {
    App::get("/", 'AdminController@index');
