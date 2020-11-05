@@ -83,14 +83,20 @@ class Request
     */
    public function setBody()
    {
+      if ($this->getMethod() == 'POST') {
+         if (isset($this->getRequestHeaders()['Content-Type']) && $this->getRequestHeaders()['Content-Type'] == "application/json") {
+            $_POST = file_get_contents('php://input');
+            $_POST = json_decode($_POST, TRUE);
+            $this->body = $_POST;
+         } else {
+            foreach ($_POST as $key => $value) {
+               $this->body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+            }
+         }
+      }
       if ($this->getMethod() == 'GET') {
          foreach ($_GET as $key => $value) {
             $this->query[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
-         }
-      }
-      if ($this->getMethod() == 'POST') {
-         foreach ($_POST as $key => $value) {
-            $this->body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
          }
       }
       $this->body = (object) $this->body;
@@ -100,5 +106,17 @@ class Request
    {
       $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, strpos($_SERVER["SERVER_PROTOCOL"], '/'))) . '://';
       return $protocol;
+   }
+   public function getRequestHeaders()
+   {
+      $headers = array();
+      foreach ($_SERVER as $key => $value) {
+         if (substr($key, 0, 5) <> 'HTTP_') {
+            continue;
+         }
+         $header = str_replace(' ', '-', ucwords(str_replace('_', ' ', strtolower(substr($key, 5)))));
+         $headers[$header] = $value;
+      }
+      return $headers;
    }
 }

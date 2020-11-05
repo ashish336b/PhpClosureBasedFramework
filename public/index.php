@@ -1,6 +1,8 @@
 <?php
 
 use ashish336b\PhpCBF\Application as App;
+use ashish336b\PhpCBF\Request;
+use ashish336b\PhpCBF\Response;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 App::$path = __DIR__ . "/../";
@@ -17,6 +19,9 @@ App::get("/user/{id}/{hello?}", 'AdminController@index');
 App::get("/bhola/{id}", 'AdminController@index');
 App::get("/", function () {
    echo "welcome to simple closure based framework";
+});
+App::post("/", function (Request $request, Response $response) {
+   $response->toJSON($request->body);
 });
 App::run();
 
