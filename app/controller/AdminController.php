@@ -14,6 +14,6 @@ class AdminController
    }
    public function user(Request $request, Response $response)
    {
-      echo $response->render("/admin", ['ok' => 1]);
+      echo $response->render("/admin", ['ok' => $request->fullURL]);
    }
 }
