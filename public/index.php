@@ -14,6 +14,9 @@ App::on("AFTER", function () {
    /* For Code to run after response if needed */
 });
 /* Test Case 1 */
+App::get("/", function (Request $request, Response $response) {
+   echo "welcome to simple closure based framework";
+});
 App::group(["prefix" => '/admin'], function () {
    App::get("/", 'AdminController@index');
    App::get("/profile/{id}/hello/{userid}/{one}/{two}/{three}/{ok?}/{hello?}/{next?}", 'AdminController@index');
@@ -22,9 +25,6 @@ App::group(["prefix" => '/admin'], function () {
 App::get("/user", 'AdminController@user');
 App::get("/user/{id}/{hello?}", 'AdminController@index');
 App::get("/bhola/{id}", 'AdminController@index');
-App::get("/", function (Request $request, Response $response) {
-   echo "welcome to simple closure based framework";
-});
 App::post("/", function (Request $request, Response $response) {
    $response->toJSON($request->body);
 });
