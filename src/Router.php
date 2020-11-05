@@ -109,6 +109,9 @@ class Router
     {
         $uriPattern = $this->currentPrefix . $url;
         $uriPattern = rtrim($uriPattern, "/"); // convert /user/home/ to /user/home
+        if ($uriPattern == "") {
+            $uriPattern = "/";
+        }
         $getAllMiddleWare = $this->_utility->pushArr($this->currentMiddleware, $middleware);
         $this->_route->addRoutes($method, $uriPattern, $action, $getAllMiddleWare);
     }
