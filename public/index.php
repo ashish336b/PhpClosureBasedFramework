@@ -7,7 +7,9 @@ use ashish336b\PhpCBF\Response;
 require_once __DIR__ . "/../vendor/autoload.php";
 App::$path = __DIR__ . "/../";
 
-
+App::on("BEFORE", function () {
+   /* For CORS HEADER */
+});
 /* Test Case 1 */
 App::group(["prefix" => '/admin'], function () {
    App::get("/", 'AdminController@index');

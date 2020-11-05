@@ -3,6 +3,7 @@
 namespace ashish336b\PhpCBF\Dispatch;
 
 use ashish336b\PhpCBF\abstraction\IDispatch;
+use ashish336b\PhpCBF\Application;
 use ashish336b\PhpCBF\Request;
 use ashish336b\PhpCBF\Response;
 use ashish336b\PhpCBF\Routes\Route;
@@ -90,6 +91,7 @@ class Dispatch implements IDispatch
             return;
         }
         $this->initRequest($request, $dataToDispatch['urlParams']);
+        $this->dispatchBeforeEvent();
         if ($dataToDispatch['fn'] instanceof Closure) {
             if ($this->dispatchMiddleware($dataToDispatch['middleware'], $request, $response)) {
                 $dataToDispatch['fn']($request, $response);
@@ -139,5 +141,12 @@ class Dispatch implements IDispatch
     {
 
         $request->setparams($params);
+    }
+    private function dispatchBeforeEvent()
+    {
+        $closureArr = Application::$appEvent;
+        foreach ($closureArr['before'] as $item) {
+            $item();
+        }
     }
 }
