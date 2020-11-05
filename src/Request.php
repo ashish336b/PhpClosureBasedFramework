@@ -7,9 +7,11 @@ class Request
    public $params;
    public $body;
    public $query;
+   public $protocol;
    public function __construct()
    {
       $this->params = (object)[];
+      $this->protocol = $this->protocol();
    }
    /**
     * getUrl
@@ -93,5 +95,10 @@ class Request
       }
       $this->body = (object) $this->body;
       $this->query = (object) $this->query;
+   }
+   private function protocol()
+   {
+      $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, strpos($_SERVER["SERVER_PROTOCOL"], '/'))) . '://';
+      return $protocol;
    }
 }
