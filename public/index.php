@@ -17,7 +17,7 @@ App::group(["prefix" => '/admin'], function () {
 App::get("/user", 'AdminController@user');
 App::get("/user/{id}/{hello?}", 'AdminController@index');
 App::get("/bhola/{id}", 'AdminController@index');
-App::get("/", function () {
+App::get("/", function (Request $request, Response $response) {
    echo "welcome to simple closure based framework";
 });
 App::post("/", function (Request $request, Response $response) {

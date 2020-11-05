@@ -8,10 +8,12 @@ class Request
    public $body;
    public $query;
    public $protocol;
+   private $header;
    public function __construct()
    {
       $this->params = (object)[];
       $this->protocol = $this->protocol();
+      $this->setRequestedHeaders();
    }
    /**
     * getUrl
@@ -84,7 +86,7 @@ class Request
    public function setBody()
    {
       if ($this->getMethod() == 'POST') {
-         if (isset($this->getRequestHeaders()['Content-Type']) && $this->getRequestHeaders()['Content-Type'] == "application/json") {
+         if (isset($this->setRequestedHeaders()['Content-Type']) && $this->setRequestedHeaders()['Content-Type'] == "application/json") {
             $_POST = file_get_contents('php://input');
             $_POST = json_decode($_POST, TRUE);
             $this->body = $_POST;
@@ -107,7 +109,7 @@ class Request
       $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, strpos($_SERVER["SERVER_PROTOCOL"], '/'))) . '://';
       return $protocol;
    }
-   public function getRequestHeaders()
+   public function setRequestedHeaders()
    {
       $headers = array();
       foreach ($_SERVER as $key => $value) {
@@ -117,6 +119,32 @@ class Request
          $header = str_replace(' ', '-', ucwords(str_replace('_', ' ', strtolower(substr($key, 5)))));
          $headers[$header] = $value;
       }
-      return $headers;
+      $this->header =  $headers;
+   }
+
+   /**
+    * header
+    * Description : Return the value of header passed as parameters.
+    * @param  mixed $header
+    * @return void
+    */
+   public function header($header)
+   {
+      if (isset($this->header[$header])) {
+         return $this->header[$header];
+      }
+      return false;
+   }
+   /**
+    * allHeaders
+    * Description : Return all requested Header in object
+    * @return void
+    */
+   public function allHeaders()
+   {
+      if (count($this->header)) {
+         return (object)$this->header;
+      }
+      return false;
    }
 }
