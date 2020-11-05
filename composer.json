@@ -1,9 +1,9 @@
 {
-    "name": "ashish336b/php-closure-based-framework",
+    "name": "ashish336b/carpo-php",
     "description": "This is small php framework for api based development",
     "authors": [
         {
-            "name": "ashish336b",
+            "name": "Aashish Bhandari",
             "email": "ashish336b@gmail.com"
         }
     ],
