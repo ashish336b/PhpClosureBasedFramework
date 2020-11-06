@@ -193,3 +193,100 @@ App::group(["prefix"=>"/admin"],function(){
    //dispatch /admin/login/1 , /admin/login/anything etc.
 });
 ```
+
+- `get`, `post` , `put` and `delete` method have two parameters. url pattern and closure respectively.
+- closure can have two paramas $request and $response of type
+  `Request` and `Response` respectively
+
+```php
+App::get("/user/{id}/{anotherParams}", function (Request $request, Response $response) {
+   // Access params value with $request->params.
+   $request->params->id;
+   $request->params->anotherParams;
+});
+```
+
+## Controller
+
+You can create controller class inside app/controller with namespace `namespace App\controller;`
+
+```php
+<?php
+
+namespace App\controller;
+
+use ashish336b\PhpCBF\Request;
+use ashish336b\PhpCBF\Response;
+
+class AdminController
+{
+  public function index(Request $request, Response $response)
+  {
+     $request->url = $request->getUrl();
+     return $response->toJSON($request);
+  }
+  public function user(Request $request, Response $response)
+  {
+     echo $response->render("/admin", ['fullUrl' => $request->fullURL]);
+  }
+}
+```
+
+you can define class and method to execute in route with classname@methodname.
+
+```php
+App::get("/admin/user", "AdminController@user");
+```
+
+- In routes "AdminController@user" means AdminController is directly inside controller folder which have user method that is to be executed for response.
+
+- If your controller is inside /app/controller/user/UserController.php and method is index that is to be executed then </br>
+
+```php
+App::get("/user", "user\UserController@index")
+```
+
+## Middleware
+
+Middleware provide a convenient mechanism for filtering HTTP requests entering your application. For Example if you want to check if user is authenticated or not you can check it in middleware. If user is not authenticated you can throw response of 403 which does not allow routes closure to execute.
+
+Your can define Middleware in routes groups as well as individual routes.
+
+```php
+App::group(["prefix"=>"/admin","middleware"=>["Auth"]],function(){
+   App::get("/",function(){
+      echo "/admin";
+   })
+});
+```
+
+Auth class should be inside app/middleware/Auth.php with namespace `namespace app\\middleware\\`;
+
+- Middleware should always return true if none of the condition meets.
+
+```php
+<?php
+
+namespace App\middleware;
+
+use ashish336b\PhpCBF\Request;
+use ashish336b\PhpCBF\Response;
+
+class Auth
+{
+   public function run(Request $request, Response $response)
+   {
+      $auth = false;
+      if(!$auth){
+         return $response->toJSON(["message" => "not authenticated"]);
+      }
+      return true;
+   }
+}
+```
+
+- You can define middleware in individual middleware in get,post,put and delete method.
+
+```php
+App::get("/user","UserController@index",["Guest"]);
+```
