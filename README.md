@@ -52,6 +52,8 @@ php -S localhost:1212 -t public/
 ### If you want the functionality of controller , middleware and views go ahead and further configure as :
 _Note:_ This is completely optional if you don't want controller and middleware.
 
+_Note:_ This is completely optional if you don't want controller and middleware.
+
 #### Then in root directory of project make folder name as shown below.
 
 ├───app </br>
@@ -63,7 +65,7 @@ _Note:_ This is completely optional if you don't want controller and middleware.
 
 ### Then Make controller class and middleware class.
 
-`AdminController`
+`AdminController.php`
 
 ```php
 <?php
@@ -91,6 +93,8 @@ _note:_ you can make class name of any name and same goes with middleware class.
 
 ### Inside Middleware folder create Auth.php and paste the following code.
 
+`Auth.php`
+
 ```php
 <?php
 
@@ -115,4 +119,4 @@ class Auth
 composer dump-autoload
 ```
 
-### with this installation of project is completed.
+### with this Full installation is completed.
