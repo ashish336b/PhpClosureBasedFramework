@@ -290,3 +290,31 @@ class Auth
 ```php
 App::get("/user","UserController@index",["Guest"]);
 ```
+
+## Request
+
+Request and Response can be accessed in both controller method and closure from parameter.
+
+- To get url without get params. eg. /admin/index
+
+```php
+$request->getUrl();
+```
+
+- Return all body from post request as object.
+
+```php
+$request->body
+```
+
+- Get all get params from url as object.
+
+```php
+$request->query
+```
+
+- return all request headers as object.
+
+```php
+$request->allHeaders()
+```
