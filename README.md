@@ -50,6 +50,7 @@ php -S localhost:1212 -t public/
 ```
 
 ### If you want the functionality of controller , middleware and views go ahead and further configure as :
+_Note:_ This is completely optional if you don't want controller and middleware.
 
 #### Then in root directory of project make folder name as shown below.
 
