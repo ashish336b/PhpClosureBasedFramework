@@ -119,3 +119,59 @@ composer dump-autoload
 ```
 
 ### with this Full installation is completed.
+
+# Routes
+
+You can create routes by calling static Class Application
+
+```php
+use ashish336b\PhpCBF\Application as App;
+App::get("/", function (Request $request, Response $response) {
+   echo "My First Route.";
+});
+```
+
+Method
+
+```php
+App::get("/urlPattern" , function(){});
+App::post("/urlPattern" , function(){});
+App::put("/urlPattern" , function(){});
+App::delete("/urlPattern",function(){});
+```
+
+### There is another method except get,post,put,delete you can access from `\ashish\PhpCBF\Application` class
+
+```php
+App::on("EVENT_TYPE" , function(){});
+```
+
+#### EVENT*TYPE can be either \_BEFORE* or _AFTER_
+
+- BEFORE : This event run before all application middleware and routes. Best usecase to set CORS header.
+- AFTER : If you need to run a piece of code after running your middleware and routes function use this.
+
+## URL Pattern
+
+- Url pattern is used to define routes. Both static pattern and dynamic pattern can be defined mostly same as laravel.
+
+- ### static Routes: `App::get("/users", Closure);`
+  `baseurl/users` url is dispatched with this pattern.
+
+* ### Variable Routes: `APP::get("/home/{id}", closure) `baseurl/home/1`or`baseurl/home/2` ... is dispatch.
+
+* You cannot register two same pattern.
+
+### Optional Pattern.
+
+- `App::get("/user/{id?}" , closure);` </br>
+  both `baseurl/user/1` and `baseurl/user` are dispatched here id params is optional.
+
+* You should not define any required placeholder/params after optional placeholder/params.</br>
+  `/user/{id?}/{userId}` This is completely wrong. </br>
+  `/user/{userId}/{id?}` This is correct way.
+* It is good practice to have only one optional params in pattern and it must be last placeholder.
+* However two or more optional params are supported if only one required params appears before any optional params. Using more than one optional params may lead to confusion and hard to debug so is not recommended</br>
+* You cannot register static Routes after any variable routes that matches static route pattern. Example: </br>
+  suppose this variable pattern is defined at first`user/{id}` and you define another pattern `user/home` which matches``user/{id}` It gives you error.
+* However you can define `user/home` at first and then `user/{id}`. This is completely fine.
