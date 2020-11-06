@@ -8,7 +8,7 @@ This is simple php closure based framework for api development
 composer require ashish336b/carpo-php
 ```
 
-#### After installing go to composer.json and paste following to main object.
+#### After installation go to composer.json and paste following to main object.
 
 ```json
  "autoload": {
