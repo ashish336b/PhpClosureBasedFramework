@@ -131,7 +131,7 @@ App::get("/", function (Request $request, Response $response) {
 });
 ```
 
-Method
+Methods
 
 ```php
 App::get("/urlPattern" , function(){});
@@ -146,7 +146,7 @@ App::delete("/urlPattern",function(){});
 App::on("EVENT_TYPE" , function(){});
 ```
 
-#### EVENT*TYPE can be either \_BEFORE* or _AFTER_
+#### EVENTTYPE can be either _BEFORE_ or _AFTER_
 
 - BEFORE : This event run before all application middleware and routes. Best usecase to set CORS header.
 - AFTER : If you need to run a piece of code after running your middleware and routes function use this.
@@ -175,3 +175,21 @@ App::on("EVENT_TYPE" , function(){});
 * You cannot register static Routes after any variable routes that matches static route pattern. Example: </br>
   suppose this variable pattern is defined at first`user/{id}` and you define another pattern `user/home` which matches``user/{id}` It gives you error.
 * However you can define `user/home` at first and then `user/{id}`. This is completely fine.
+
+### Routes Group
+
+- Your can define routes group just like in other famous framework like laravel, slim. etc.
+
+* First Params is array which can have two keys params and middleware.
+* Params : For defining common url pattern that appears in every routes group.
+* Middleware : name of middleware class that is inside `/App/middleware/` namespace.
+
+```php
+App::group(["prefix"=>"/admin"],function(){
+   // every GET POST PUT DELETE methods routes can be define.
+   App::get("/login",Closure);
+   //dispatch /admin/login
+   App::get("/login/{id}", Closure);
+   //dispatch /admin/login/1 , /admin/login/anything etc.
+});
+```
