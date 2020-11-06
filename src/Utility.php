@@ -83,11 +83,11 @@ class Utility
    {
       $pattern = str_replace("/", "\/", $pattern);
       // below line check if /{id} is in the string and replace with regex
-      $regix = $this->replaceWithRegex('/\/\{[\w]*\}/', "/([\w]*)", $pattern);
+      $regix = $this->replaceWithRegex('/\/\{[\w]*\}/', "/([\w]+)", $pattern);
       // below line check if /{id?} is in the string and replace with apporiate regex
-      $regix = $this->replaceWithRegex("/([\\\]\/\{[a-z]+\?\})/", '(?:\/([\w]*))?', $regix);
+      $regix = $this->replaceWithRegex("/([\\\]\/\{[a-z]+\?\})/", '(?:\/([\w]+))?', $regix);
       // below line check if /{id:num} is in the string and replace with apporiate regex
-      $regix = $this->replaceWithRegex('/\/\{[\w]*:num\}/', '(\/[\d]*)?', $regix);
+      $regix = $this->replaceWithRegex('/\/\{[\w]*:num\}/', '(\/[\d]+)?', $regix);
       return $regix;
    }
 }
