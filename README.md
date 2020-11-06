@@ -43,6 +43,14 @@ App::get("/", function (Request $request, Response $response) {
 App::run();
 ```
 
+### With this Installation is completed. Run the command to open web server in port 1212.
+
+```bash
+php -S localhost:1212 -t public/
+```
+
+### If you want the functionality of controller , middleware and views go ahead and further configure as :
+
 #### Then in root directory of project make folder name as shown below.
 
 ├───app </br>
