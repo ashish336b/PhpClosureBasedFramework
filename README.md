@@ -295,7 +295,7 @@ App::get("/user","UserController@index",["Guest"]);
 
 Request and Response can be accessed in both controller method and closure from parameter.
 
-- To get url without get params. eg. /admin/index
+-return url without get params. eg. /admin/index
 
 ```php
 $request->getUrl();
@@ -307,17 +307,55 @@ $request->getUrl();
 $request->body
 ```
 
+- Access Body with name. If BODY_NAME is in object of `$request->body` then it return value else return `null`.
+
+```php
+$request->body("BODY_NAME");
+```
+
 - Get all get params from url as object.
 
 ```php
 $request->query
 ```
 
+- Return get query params value. If `QUERY_NAME` is not set it return `null`
+
+```php
+$request->query("QUERY_NAME");
+```
+
 - return all request headers as object.
 
 ```php
-$request->allHeaders()
+$request->allHeaders();
 ```
+
+- Return header value. If not set return false
+
+```php
+
+$request->header("Header_NAME");
+```
+
+# Response Class
+
+Response class have two method as of now.
+
+- Return object to json.
+
+```php
+$response->toJSON($obj);
+```
+
+- render method return view containing html files. Accept two params first is path of folder from view folder and another is associative array.
+
+```php
+$response->render("/admin",array);
+```
+
+- `/admin` is file from `/app/view/admin.php`
+- `/admin/login` is file from `/app/view/admin/login.php`
 
 ## License & copyright
 
