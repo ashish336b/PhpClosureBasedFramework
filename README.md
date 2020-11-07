@@ -2,7 +2,16 @@
 
 This is simple php closure based framework for api development
 
-### Installation
+- [Installation](#Installation)
+
+* [Routes](#Routes)
+
+* [Controller](#Controller)
+* [Middleware](#Middleware)
+* [Request](#Request)
+* [Response](#Response)
+
+# Installation
 
 ```composer
 composer require ashish336b/carpo-php
@@ -43,13 +52,13 @@ App::get("/", function (Request $request, Response $response) {
 App::run();
 ```
 
-### With this Installation is completed. Run the command to open web server in port 1212.
+#### With this Installation is completed. Run the command to open web server in port 1212.
 
 ```bash
 php -S localhost:1212 -t public/
 ```
 
-### If you want the functionality of controller , middleware and views go ahead and further configure as :
+#### If you want the functionality of controller , middleware and views go ahead and further configure as :
 
 _Note:_ This is completely optional if you don't want controller and middleware.
 
@@ -62,7 +71,7 @@ _Note:_ This is completely optional if you don't want controller and middleware.
 ├───public _Already in project folder_</br>
 └───vendor _Already in project folder_</br>
 
-### Then Make controller class and middleware class.
+#### Then Make controller class and middleware class.
 
 `AdminController.php`
 
@@ -90,7 +99,7 @@ class AdminController
 
 _note:_ you can make class name of any name and same goes with middleware class.
 
-### Inside Middleware folder create Auth.php and paste the following code.
+#### Inside Middleware folder create Auth.php and paste the following code.
 
 `Auth.php`
 
@@ -112,13 +121,13 @@ class Auth
 }
 ```
 
-### Then run below command in terminal to load new class.
+#### Then run below command in terminal to load new class.
 
 ```composer
 composer dump-autoload
 ```
 
-### with this Full installation is completed.
+#### with this Full installation is completed.
 
 # Routes
 
@@ -140,7 +149,7 @@ App::put("/urlPattern" , function(){});
 App::delete("/urlPattern",function(){});
 ```
 
-### There is another method except get,post,put,delete you can access from `\ashish\PhpCBF\Application` class
+#### There is another method except get,post,put,delete you can access from `\ashish\PhpCBF\Application` class
 
 ```php
 App::on("EVENT_TYPE" , function(){});
@@ -151,18 +160,18 @@ App::on("EVENT_TYPE" , function(){});
 - BEFORE : This event run before all application middleware and routes. Best usecase to set CORS header.
 - AFTER : If you need to run a piece of code after running your middleware and routes function use this.
 
-## URL Pattern
+### URL Pattern
 
 - Url pattern is used to define routes. Both static pattern and dynamic pattern can be defined mostly same as laravel.
 
-- ### static Routes: `App::get("/users", Closure);`
+- #### static Routes: `App::get("/users", Closure);`
   `baseurl/users` url is dispatched with this pattern.
 
-* ### Variable Routes: `APP::get("/home/{id}", closure) `baseurl/home/1`or`baseurl/home/2` ... is dispatch.
+* #### Variable Routes: `APP::get("/home/{id}", closure) `baseurl/home/1`or`baseurl/home/2` ... is dispatch.
 
 * You cannot register two same pattern.
 
-### Optional Pattern.
+#### Optional Pattern.
 
 - `App::get("/user/{id?}" , closure);` </br>
   both `baseurl/user/1` and `baseurl/user` are dispatched here id params is optional.
@@ -176,7 +185,7 @@ App::on("EVENT_TYPE" , function(){});
   suppose this variable pattern is defined at first`user/{id}` and you define another pattern `user/home` which matches``user/{id}` It gives you error.
 * However you can define `user/home` at first and then `user/{id}`. This is completely fine.
 
-### Routes Group
+#### Routes Group
 
 - Your can define routes group just like in other famous framework like laravel, slim. etc.
 
@@ -206,7 +215,7 @@ App::get("/user/{id}/{anotherParams}", function (Request $request, Response $res
 });
 ```
 
-## Controller
+# Controller
 
 You can create controller class inside app/controller with namespace `namespace App\controller;`
 
@@ -246,7 +255,7 @@ App::get("/admin/user", "AdminController@user");
 App::get("/user", "user\UserController@index")
 ```
 
-## Middleware
+# Middleware
 
 Middleware provide a convenient mechanism for filtering HTTP requests entering your application. For Example if you want to check if user is authenticated or not you can check it in middleware. If user is not authenticated you can throw response of 403 which does not allow routes closure to execute.
 
@@ -291,7 +300,7 @@ class Auth
 App::get("/user","UserController@index",["Guest"]);
 ```
 
-## Request
+# Request
 
 Request and Response can be accessed in both controller method and closure from parameter.
 
@@ -338,7 +347,7 @@ $request->allHeaders();
 $request->header("Header_NAME");
 ```
 
-# Response Class
+# Response
 
 Response class have two method as of now.
 
@@ -357,7 +366,7 @@ $response->render("/admin",array);
 - `/admin` is file from `/app/view/admin.php`
 - `/admin/login` is file from `/app/view/admin/login.php`
 
-## License & copyright
+# License & copyright
 
 Copyright (c) Ashish Bhandari
 
