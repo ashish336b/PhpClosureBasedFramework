@@ -318,3 +318,9 @@ $request->query
 ```php
 $request->allHeaders()
 ```
+
+## License & copyright
+
+Copyright (c) Ashish Bhandari
+
+Licecensed under the MID [License].
