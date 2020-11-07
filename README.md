@@ -323,4 +323,4 @@ $request->allHeaders()
 
 Copyright (c) Ashish Bhandari
 
-Licecensed under the MID [License].
+Licensed under the MID [License](LICENSE).
