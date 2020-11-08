@@ -14,7 +14,7 @@ This is simple php closure based framework for api development
 # Installation
 
 ```composer
-composer create-project ashish336b/carpo-php-framework
+composer create-project ashish336b/carpo-php-framework blog
 ```
 
 #### With this Installation is completed. Run the command to open web server in port 1212.
