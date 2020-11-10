@@ -10,7 +10,7 @@ This is simple php closure based framework for api development
 * [Middleware](#Middleware)
 * [Request](#Request)
 * [Response](#Response)
-
+* [views] (#views)
 # Installation
 
 ```composer
