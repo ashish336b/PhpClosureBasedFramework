@@ -275,6 +275,42 @@ $response->render("/admin",array);
 - `/admin` is file from `/app/view/admin.php`
 - `/admin/login` is file from `/app/view/admin/login.php`
 
+# views
+
+- views have three method render() , include() and extend().
+
+* render() is already explainded in Response documentation.
+* include() method is called inside view file to include files. Usually done for including header and footer. <br/>
+  `views/admin.php`
+
+```php
+<body>
+<?php $this->include("/partials/header") ?>
+<h1>MVC Framework <?php echo $ok ?></h1>
+<?php $this->include("/partials/footer") ?>
+</body>
+```
+
+- Example : include header.php inside views/partials/header.php.
+- Extend method is used for extending layouts. This replace {{any_string}} with content that comes after calling extend() method and before end() method in views file
+  Example. layout.php
+
+```php
+<?php $this->include('partials/header'); ?>
+{{any_string}}
+<?php $this->include("partials/footer") ?>
+```
+
+- Extending above layout.php view file.
+
+```php
+<?php $this->extend("any_string", "partials/layout"); ?>
+<h1>Body <?php echo $ok ?></h1>
+<?php $this->end() ?>
+```
+
+- replace `{{any_string}}` with `<h1>Body <?php echo $ok ?></h1>`
+
 # License & copyright
 
 Copyright (c) Ashish Bhandari
