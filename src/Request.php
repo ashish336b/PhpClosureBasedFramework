@@ -65,7 +65,7 @@ class Request
    public function body($name)
    {
       if (property_exists($this->body, $name)) {
-         return $this->query->{$name};
+         return $this->body->{$name};
       }
       return null;
    }
