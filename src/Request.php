@@ -100,7 +100,7 @@ class Request
    private function setBody()
    {
       if ($this->getMethod() == 'POST') {
-         if (isset($this->setRequestedHeaders()['Content-Type']) && $this->setRequestedHeaders()['Content-Type'] == "application/json") {
+         if ($this->header("Content-Type") == "application/json") {
             $_POST = file_get_contents('php://input');
             $_POST = json_decode($_POST, TRUE);
             $this->body = $_POST;
