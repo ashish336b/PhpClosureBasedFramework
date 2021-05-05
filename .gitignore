@@ -3,3 +3,4 @@ vendor
 backup
 app
 public
+composer.lock
