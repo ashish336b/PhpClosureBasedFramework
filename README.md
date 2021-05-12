@@ -9,6 +9,7 @@ This is simple php closure based framework for api development
 * [Controller](#Controller)
 * [Model](#Model)
 * [Database](#Database)
+* [Migration](#Migration)
 * [Middleware](#Middleware)
 * [Request](#Request)
 * [Response](#Response)
@@ -215,6 +216,41 @@ $result = DB::raw()->query("select * from user where id =  ?",[1])->result();
 ```php
 $noOfRow = DB::raw()->query("select * from user")->count();
 ```
+# Migration
+you can use migration to run create table, alert etc. every migration should be inside app/migration directory.
+```php
+<?php
+
+namespace App\migrations;
+
+use ashish336b\PhpCBF\Application;
+
+class create_user_table
+{
+   public function up()
+   {
+
+      $SQL = "CREATE TABLE users (
+               id INT AUTO_INCREMENT PRIMARY KEY,
+               firstname VARCHAR(255) NOT NULL,
+               lastname VARCHAR(255) NOT NULL,
+               email VARCHAR(255) NOT NULL,
+               created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+               updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )";
+   Application::$pdo->exec($SQL);
+   }
+
+   public function down()
+   {
+      $SQL = "DROP TABLE users;";
+      Application::$pdo->exec($SQL);
+   }
+}
+```
+every migration should be created in this manner.
+Till now sub directory is not allowed to store migration. Every migration should be in app/migrations directory.
+
 # Middleware
 
 Middleware provide a convenient mechanism for filtering HTTP requests entering your application. For Example if you want to check if user is authenticated or not you can check it in middleware. If user is not authenticated you can throw response of 403 which does not allow routes closure to execute.
