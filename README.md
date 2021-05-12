@@ -183,10 +183,13 @@ class Auth extends Model
    protected $table = "user";
    public function fetchUser()
    {
+      //directly run query from model
       return $this->query("select * from user")->results();
+      // fetch all row of table specified in $table
+      return $this->fetch();
+      // get columns of table
+      return $this->getColumns();
    }
-
-   
 }
 ```
 To access model function from controller.
