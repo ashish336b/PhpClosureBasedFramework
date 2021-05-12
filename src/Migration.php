@@ -17,8 +17,7 @@ class Migration
             continue;
          }
 
-         require_once Application::$path . 'app/migrations/' . $migration;
-         $className = pathinfo($migration, PATHINFO_FILENAME);
+         $className = str_replace(".php","","App\\migrations\\$migration"); 
          $instance = new $className();
          $this->log("Applying migration $migration");
          $instance->up();
