@@ -10,14 +10,14 @@ class Migration
       $appliedMigrations = $this->getAppliedMigrations();
 
       $newMigrations = [];
-      $files = scandir(Application::$ROOT_DIR . '/migrations');
+      $files = scandir(Application::$path . 'app/migrations');
       $toApplyMigrations = array_diff($files, $appliedMigrations);
       foreach ($toApplyMigrations as $migration) {
          if ($migration === '.' || $migration === '..') {
             continue;
          }
 
-         require_once Application::$ROOT_DIR . '/migrations/' . $migration;
+         require_once Application::$path . 'app/migrations/' . $migration;
          $className = pathinfo($migration, PATHINFO_FILENAME);
          $instance = new $className();
          $this->log("Applying migration $migration");
@@ -35,7 +35,7 @@ class Migration
 
    public function createMigrationsTable()
    {
-      DB::raw()->query("CREATE TABLE IF NOT EXISTS migrations (
+      Application::$pdo->exec("CREATE TABLE IF NOT EXISTS migrations (
          id INT AUTO_INCREMENT PRIMARY KEY,
          migration VARCHAR(255),
          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -53,8 +53,13 @@ class Migration
    protected function saveMigrations(array $newMigrations)
    {
       $str = implode(',', array_map(fn ($m) => "('$m')", $newMigrations));
-      $statement = $this->pdo->prepare("INSERT INTO migrations (migration) VALUES 
+      $statement = Application::$pdo->prepare("INSERT INTO migrations (migration) VALUES 
             $str");
       $statement->execute();
+   }
+
+   private function log($message)
+   {
+      echo "[" . date("Y-m-d H:i:s") . "] - " . $message . PHP_EOL;
    }
 }

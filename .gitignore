@@ -4,3 +4,4 @@ backup
 app
 public
 composer.lock
+bin
