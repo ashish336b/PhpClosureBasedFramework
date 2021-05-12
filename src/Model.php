@@ -7,7 +7,6 @@ class Model
    protected $table;
    private $_db;
 
-
    public function getColumns()
    {
       return DB::table($this->table)->getColumns();
@@ -18,7 +17,8 @@ class Model
       return DB::table($this->table)->get();
    }
 
-   public function count()
+   public function query($sql, $params = [], $class = false)
    {
+      return DB::raw()->query($sql, $params, $class);
    }
 }

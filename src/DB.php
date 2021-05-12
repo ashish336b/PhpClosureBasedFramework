@@ -10,10 +10,15 @@ class DB
    private static $_table, $_pdo, $_instance;
    private $_query, $_count, $_lastInsertID;
 
-
    public static function table($table)
    {
       self::$_table = $table;
+      self::$_pdo = Application::$pdo;
+      return self::getInstance();
+   }
+
+   public static function raw()
+   {
       self::$_pdo = Application::$pdo;
       return self::getInstance();
    }
@@ -65,14 +70,15 @@ class DB
    {
       return $this->_lastInsertId;
    }
-   public function getColumns()
-   {
-      return $this->query("SHOW COLUMNS FROM " . self::$_table)->results();
-   }
 
    public function results()
    {
       return $this->_result;
+   }
+
+   public function getColumns()
+   {
+      return $this->query("SHOW COLUMNS FROM " . self::$_table)->results();
    }
 
    public static function getInstance()
