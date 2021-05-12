@@ -7,6 +7,8 @@ This is simple php closure based framework for api development
 * [Routes](#Routes)
 
 * [Controller](#Controller)
+* [Model](#Model)
+* [Database](#Database)
 * [Middleware](#Middleware)
 * [Request](#Request)
 * [Response](#Response)
@@ -29,6 +31,7 @@ php -S localhost:1212 -t public/
 ├───app </br>
 │ ├───controller </br>
 │ ├───middleware </br>
+│ ├───model </br>
 │ └───views </br>
 ├───public </br>
 └───vendor </br>
@@ -41,7 +44,7 @@ php -S localhost:1212 -t public/
 
 # Routes
 
-You can create routes by calling static Class Application
+You can create routes by calling static class `Application`
 
 ```php
 use ashish336b\PhpCBF\Application as App;
@@ -59,7 +62,7 @@ App::put("/urlPattern" , function(){});
 App::delete("/urlPattern",function(){});
 ```
 
-#### There is another method except get,post,put,delete you can access from `\ashish\PhpCBF\Application` class
+#### There is also another method you can access from `\ashish\PhpCBF\Application` class
 
 ```php
 App::on("EVENT_TYPE" , function(){});
@@ -68,7 +71,7 @@ App::on("EVENT_TYPE" , function(){});
 #### EVENTTYPE can be either _BEFORE_ or _AFTER_
 
 - BEFORE : This event run before all application middleware and routes. Best usecase to set CORS header.
-- AFTER : If you need to run a piece of code after running your middleware and routes function use this.
+- AFTER : If you need to run a piece of code after running your middleware and routes function use this. For example global response header is set here
 
 ### URL Pattern
 
@@ -164,7 +167,51 @@ App::get("/admin/user", "AdminController@user");
 ```php
 App::get("/user", "user\UserController@index")
 ```
+# Model
+This contains data related logic such as retriving data from database and passing to controller.<br/>
+you have to create model class inside model folder. This folder can contain sub folder to group models.
+```php
+<?php
 
+namespace App\model;
+
+use ashish336b\PhpCBF\DB;
+use ashish336b\PhpCBF\Model;
+
+class Auth extends Model
+{
+   protected $table = "user";
+   public function fetchUser()
+   {
+      return $this->query("select * from user")->results();
+   }
+
+   
+}
+```
+To access model function from controller.
+```php
+$user  = $this->model("Auth")->fetchUser();
+```
+Here `Auth` is the name of file that is inside model folder and `fetchUser()` is method inside Auth file/class.
+```php
+$this->model("Admin\Auth")->fetchUser();
+```
+In above case Auth class is inside Admin folder which is inside model folder.
+# Database
+This framework mainly support mysql database. However you can integrate any database with the help other open source project.
+* To fetch all data from table(eg. user)
+```php
+DB::table("user")->get();
+```
+* To run any query
+```php
+$result = DB::raw()->query("select * from user where id =  ?",[1])->result();
+```
+* count result
+```php
+$noOfRow = DB::raw()->query("select * from user")->count();
+```
 # Middleware
 
 Middleware provide a convenient mechanism for filtering HTTP requests entering your application. For Example if you want to check if user is authenticated or not you can check it in middleware. If user is not authenticated you can throw response of 403 which does not allow routes closure to execute.
