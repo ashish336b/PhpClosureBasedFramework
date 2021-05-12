@@ -3,13 +3,17 @@
 namespace ashish336b\PhpCBF;
 
 use Exception;
+use PDO;
+use PDOException;
 
 class Application
 {
    public static $router;
    public static $_instance = null;
    public static $path = '';
+   public static $config;
    public static $appEvent = ["before" => [], 'after' => []];
+   public static $pdo = null;
    /**
     * __construct
     *
@@ -18,6 +22,7 @@ class Application
    public  function __construct()
    {
       self::$router = new Router();
+      self::connectDB();
    }
 
    /**
@@ -32,6 +37,19 @@ class Application
       self::getInstance();
       self::$router->$name(...$arguments);
    }
+
+   public static function on($params, $closure)
+   {
+      // if (\strtolower($params) !== 'before' && strtolower($params) !== 'after') {
+      //    throw new Exception("First Parameters should be either BEFORE or AFTER");
+      // }
+      if (strtolower($params) == 'before') {
+         self::$appEvent['before'][] = $closure;
+      }
+      if (strtolower($params) == 'after') {
+         self::$appEvent['after'][] = $closure;
+      }
+   }
    /**
     * getInstance
     *
@@ -45,16 +63,13 @@ class Application
       return self::$_instance;
    }
 
-   public static function on($params, $closure)
+   private static function connectDB()
    {
-      // if (\strtolower($params) !== 'before' && strtolower($params) !== 'after') {
-      //    throw new Exception("First Parameters should be either BEFORE or AFTER");
-      // }
-      if (strtolower($params) == 'before') {
-         self::$appEvent['before'][] = $closure;
-      }
-      if (strtolower($params) == 'after') {
-         self::$appEvent['after'][] = $closure;
+      try {
+         self::$pdo = new PDO("mysql:host=" . Application::$config["host"] . ";dbname=" . Application::$config["dbname"] . ";port=" . Application::$config["dbport"], Application::$config["dbuser"], Application::$config["dbpass"]);
+         self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      } catch (PDOException $e) {
+         die($e->getMessage());
       }
    }
 }
